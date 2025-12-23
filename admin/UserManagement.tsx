@@ -14,6 +14,12 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+/**
+ * USER MANAGEMENT - Quản lý người dùng
+ * - Hiển thị danh sách user
+ * - Xóa tài khoản user
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -45,7 +51,6 @@ export default function UserManagement({ navigation }: any) {
       const response = await axios.get(`${BASE_URL}/users?role=0&role1=1`);
       setUsers(response.data);
     } catch (err) {
-      console.error("Lỗi khi tải danh sách user:", err);
       Alert.alert("Lỗi", "Không thể tải danh sách user. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);
@@ -71,7 +76,6 @@ export default function UserManagement({ navigation }: any) {
             Alert.alert("Thành công", "Tài khoản đã được xóa.");
             fetchUsers(); // Refresh list
           } catch (err) {
-            console.error("Lỗi khi xóa:", err);
             Alert.alert(
               "Lỗi",
               "Không thể xóa tài khoản này. Vui lòng thử lại sau."

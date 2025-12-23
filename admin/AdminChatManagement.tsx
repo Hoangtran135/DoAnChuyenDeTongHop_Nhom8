@@ -11,6 +11,12 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../ipconfig';
 
+/**
+ * ADMIN CHAT MANAGEMENT - Quản lý chat
+ * - Hiển thị danh sách cuộc trò chuyện
+ * - Điều hướng đến chat box
+ */
+
 type Props = {
   navigation: any;
 };
@@ -37,7 +43,6 @@ export default function AdminChatManagement({ navigation }: Props) {
           fetchAllConversations(null);
         }
       } catch (error) {
-        console.error('Lỗi lấy userId từ AsyncStorage:', error);
         fetchAllConversations(null);
       }
     };
@@ -52,7 +57,6 @@ export default function AdminChatManagement({ navigation }: Props) {
 
   const fetchAllConversations = async (currentUserId: number | null) => {
     setLoading(true);
-    console.log('Fetching conversations với userId =', currentUserId);
 
     let url = `${BASE_URL}/api/conversations1`;
     if (currentUserId !== null) {
@@ -63,7 +67,6 @@ export default function AdminChatManagement({ navigation }: Props) {
       const res = await axios.get<Conversation[]>(url);
       setConversations(res.data);
     } catch (error) {
-      console.error('Fetch all conversations error:', error);
     } finally {
       setLoading(false);
     }

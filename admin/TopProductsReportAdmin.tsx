@@ -16,6 +16,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * TOP PRODUCTS REPORT ADMIN - Báo cáo sản phẩm bán chạy
+ * - Hiển thị biểu đồ sản phẩm bán chạy
+ * - Danh sách top sản phẩm
+ */
+
 const screenWidth = Dimensions.get("window").width;
 
 // Color palette for consistency
@@ -246,10 +252,8 @@ const TopProductsReportAdmin = () => {
       try {
         setLoading(true);
         const response = await axios.get(`${BASE_URL}/top-products/5`);
-        console.log("Top products data:", response.data);
         setProducts(response.data);
       } catch (error) {
-        console.error("Lỗi tải sản phẩm:", error);
         Alert.alert("Lỗi", "Không thể tải danh sách sản phẩm.");
         setProducts([
           { id: 1, name: "Sản phẩm 1", total_sold: 0 },

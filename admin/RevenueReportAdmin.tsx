@@ -15,6 +15,12 @@ import { BASE_URL } from "../ipconfig";
 import { MaterialIcons } from "@expo/vector-icons";
 import Navbar from "./Navbar";
 
+/**
+ * REVENUE REPORT ADMIN - Báo cáo doanh thu
+ * - Hiển thị biểu đồ doanh thu theo tháng
+ * - Tính tổng doanh thu
+ */
+
 const screenWidth = Dimensions.get("window").width;
 
 const colors = {
@@ -56,7 +62,6 @@ const RevenueReportAdmin = () => {
           : [response.data];
         setRevenueData(data);
       } catch (error) {
-        console.error("Error fetching revenue data:", error);
         Alert.alert("Lỗi", "Không thể tải dữ liệu doanh thu.");
         setRevenueData([
           { month: "01", total_revenue: "0", total_sold_products: 0 },

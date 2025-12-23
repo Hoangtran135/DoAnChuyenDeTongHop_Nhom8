@@ -57,7 +57,11 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Start"
-        screenOptions={{ headerShown: true, animation: "fade" }}
+        screenOptions={{
+          headerShown: true,
+          animation: "fade",
+          animationDuration: 200,
+        }}
       >
         <Stack.Screen
           name="Start"

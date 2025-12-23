@@ -11,6 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
+/**
+ * NAVBAR ADMIN - Menu điều hướng admin
+ * - Hiển thị các menu quản lý
+ * - Đăng xuất
+ */
+
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
   keyof RootStackParamList
@@ -105,7 +111,6 @@ export default function Navbar({ toggleNavbar }: NavbarProps) {
             await AsyncStorage.removeItem("userId"); // xóa userId trong AsyncStorage
             navigation.replace("Trang Chủ");
           } catch (error) {
-            console.error("Lỗi khi đăng xuất:", error);
           }
         }}
       />

@@ -16,6 +16,14 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { ParamListBase } from "@react-navigation/native";
 
+/**
+ * ORDER MANAGEMENT ADMIN - Quản lý đơn hàng
+ * - Hiển thị danh sách đơn hàng
+ * - Xác nhận đơn hàng
+ * - Hủy đơn hàng
+ * - Xem chi tiết đơn hàng
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -58,7 +66,6 @@ const OrderManagementAdmin = () => {
       const response = await axios.get(`${BASE_URL}/orders`);
       setOrders(response.data);
     } catch (error) {
-      console.error("Lỗi khi lấy danh sách đơn hàng:", error);
       Alert.alert(
         "Lỗi",
         "Không thể tải danh sách đơn hàng. Vui lòng thử lại sau."
@@ -92,7 +99,6 @@ const OrderManagementAdmin = () => {
       );
       Alert.alert("Thành công", `Đơn hàng ${orderId} đã được giao.`);
     } catch (error) {
-      console.error("Lỗi xác nhận đơn hàng:", error);
       Alert.alert("Lỗi", "Không thể xác nhận đơn hàng.");
     }
   };
@@ -109,7 +115,6 @@ const OrderManagementAdmin = () => {
       );
       Alert.alert("Thành công", `Đơn hàng ${orderId} đã bị hủy.`);
     } catch (error) {
-      console.error("Lỗi hủy đơn hàng:", error);
       Alert.alert("Lỗi", "Không thể hủy đơn hàng.");
     }
   };

@@ -33,18 +33,19 @@ interface Order {
 }
 
 export default function OrderManagementScreen({ navigation }: any) {
+  // State management
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"All" | "Ordered" | "Delivered" | "Canceled">("All");
 
+  // Lấy userId từ AsyncStorage
   useEffect(() => {
     AsyncStorage.getItem("userId").then((id) => {
       if (id) {
         const parsedId = parseInt(id, 10);
         if (!isNaN(parsedId)) {
           setUserId(parsedId);
-          console.log("User ID:", parsedId);
         } else {
           Alert.alert("Lỗi", "ID người dùng không hợp lệ.");
           setLoading(false);
@@ -55,24 +56,26 @@ export default function OrderManagementScreen({ navigation }: any) {
     });
   }, []);
 
+  // Lấy danh sách đơn hàng khi có userId
   useEffect(() => {
     if (userId) {
       fetchOrders();
     }
   }, [userId]);
 
+  // Lấy danh sách đơn hàng từ API
   const fetchOrders = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/orders/user/${userId}`);
       setOrders(response.data);
     } catch (err) {
-      console.error("Lỗi khi tải đơn hàng:", err);
       Alert.alert("Lỗi", "Không thể tải đơn hàng. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Hủy đơn hàng
   const cancelOrder = async (orderId: number) => {
     Alert.alert("Xác nhận", "Bạn có chắc muốn hủy đơn hàng này?", [
       { text: "Không" },
@@ -84,7 +87,6 @@ export default function OrderManagementScreen({ navigation }: any) {
             Alert.alert("Thành công", "Đơn hàng đã được hủy.");
             fetchOrders();
           } catch (error) {
-            console.error("Lỗi khi hủy đơn:", error);
             Alert.alert("Lỗi", "Không thể hủy đơn hàng. Vui lòng thử lại sau.");
           }
         },
@@ -93,6 +95,7 @@ export default function OrderManagementScreen({ navigation }: any) {
     ]);
   };
 
+  // Lấy màu hiển thị theo trạng thái đơn hàng
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Ordered":
@@ -106,16 +109,19 @@ export default function OrderManagementScreen({ navigation }: any) {
     }
   };
 
+  // Format số tiền với dấu phẩy
   const formatCurrency = (value: number | null) => {
     if (value === null) return "N/A";
     return value.toLocaleString();
   };
 
+  // Format ngày tháng
   const formatDate = (dateString: string | null) => {
     if (dateString === null) return "N/A";
     return new Date(dateString).toLocaleDateString();
   };
 
+  // Render order item
   const renderOrderItem = ({ item }: { item: Order }) => (
     <View style={styles.orderItem}>
       <Text style={styles.orderId}>Đơn hàng #{item.id}</Text>
@@ -177,6 +183,7 @@ export default function OrderManagementScreen({ navigation }: any) {
     </View>
   );
 
+  // Lọc đơn hàng theo trạng thái
   const filteredOrders = orders.filter((order) =>
     filter === "All" ? true : order.status === filter
   );

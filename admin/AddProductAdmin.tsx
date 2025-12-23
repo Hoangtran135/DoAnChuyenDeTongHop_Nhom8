@@ -15,6 +15,13 @@ import { BASE_URL } from "../ipconfig";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 
+/**
+ * ADD PRODUCT ADMIN - Thêm sản phẩm mới
+ * - Nhập thông tin sản phẩm
+ * - Chọn danh mục và ảnh
+ * - Upload sản phẩm lên server
+ */
+
 interface Category {
   id: number;
   name: string;
@@ -37,7 +44,6 @@ export default function AddProductAdmin({ navigation }: any) {
         const response = await axios.get(`${BASE_URL}/listcategories`);
         setCategories(response.data);
       } catch (error) {
-        console.error("Lỗi khi tải danh mục:", error);
         Alert.alert("Lỗi", "Không thể tải danh mục");
       }
     };
@@ -98,7 +104,6 @@ export default function AddProductAdmin({ navigation }: any) {
       Alert.alert("Thành công", "Sản phẩm đã được thêm");
       navigation.replace("Quản Lý Sản Phẩm");
     } catch (error) {
-      console.error("Lỗi khi thêm sản phẩm:", error);
       Alert.alert("Lỗi", "Không thể thêm sản phẩm");
     } finally {
       setUploading(false);

@@ -36,22 +36,28 @@ export default function Navbar({ navigation }: any) {
 }
 
 function NavItem({ icon, label, onPress }: any) {
-  const [scale] = useState(new Animated.Value(1)); // Khởi tạo animation scale
+  const [scale] = useState(new Animated.Value(1));
 
   const handlePressIn = () => {
-    Animated.timing(scale, {
-      toValue: 1.1, // Tăng nhẹ kích thước icon khi nhấn
-      duration: 200, // Thời gian hiệu ứng
+    Animated.spring(scale, {
+      toValue: 0.9,
+      friction: 3,
+      tension: 40,
       useNativeDriver: true,
     }).start();
   };
 
   const handlePressOut = () => {
-    Animated.timing(scale, {
-      toValue: 1, // Quay lại kích thước ban đầu
-      duration: 200,
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 3,
+      tension: 40,
       useNativeDriver: true,
     }).start();
+  };
+
+  const handlePress = () => {
+    onPress();
   };
 
   return (
@@ -59,7 +65,8 @@ function NavItem({ icon, label, onPress }: any) {
       style={styles.item}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
-      onPress={onPress}
+      onPress={handlePress}
+      activeOpacity={0.7}
     >
       <Animated.View style={{ transform: [{ scale }] }}>
         <Ionicons name={icon} size={22} color="#333" />

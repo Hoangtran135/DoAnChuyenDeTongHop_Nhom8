@@ -18,6 +18,12 @@ import { RootStackParamList } from "../types";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+/**
+ * BANNER ADMIN - Quản lý banner
+ * - Hiển thị danh sách banner
+ * - Thêm, sửa, xóa banner
+ */
+
 type NavigationProp = StackNavigationProp<RootStackParamList, "Quản Lý Banner">;
 
 interface Banner {

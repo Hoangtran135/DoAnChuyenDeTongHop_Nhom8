@@ -13,36 +13,30 @@ import { BASE_URL } from "../ipconfig";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
+import { theme } from "../styles/theme";
 
 const styles = StyleSheet.create({
   addToCartButton: {
-    backgroundColor: "#6A0DAD",
-    paddingVertical: 16,
-    borderRadius: 12,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing.lg,
+    borderRadius: theme.borderRadius.lg,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
+    ...theme.shadow.md,
     flex: 1,
-    marginRight: 12,
-    elevation: 4,
+    marginRight: theme.spacing.md,
   },
   iconButton: {
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: "#6A0DAD",
+    padding: theme.spacing.md,
+    borderRadius: theme.borderRadius.lg,
+    backgroundColor: theme.colors.primary,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4,
+    ...theme.shadow.md,
   },
 });
 
 export default function ProductDetailScreen({ route, navigation }: any) {
+  // State management
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<number | null>(null);
@@ -51,6 +45,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
 
   const { productId } = route.params || {};
 
+  // Load dữ liệu khi component mount
   useEffect(() => {
     if (!productId) {
       Alert.alert("Lỗi", "Không tìm thấy sản phẩm");
@@ -63,18 +58,19 @@ export default function ProductDetailScreen({ route, navigation }: any) {
     fetchFeedbacks();
   }, [productId]);
 
+  // Kiểm tra sản phẩm có trong yêu thích không
   useEffect(() => {
     if (userId) {
       checkIfFavorite();
     }
   }, [userId]);
 
+  // Lấy thông tin chi tiết sản phẩm
   const fetchProduct = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/products/${productId}`);
       setProduct(res.data);
     } catch (err) {
-      console.error("❌ Lỗi lấy chi tiết sản phẩm:", err);
       Alert.alert("Lỗi", "Không thể tải thông tin sản phẩm");
       navigation.goBack();
     } finally {
@@ -82,6 +78,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
     }
   };
 
+  // Lấy userId từ AsyncStorage
   const fetchUserId = async () => {
     try {
       const id = await AsyncStorage.getItem("userId");
@@ -89,19 +86,19 @@ export default function ProductDetailScreen({ route, navigation }: any) {
         setUserId(parseInt(id, 10));
       }
     } catch (error) {
-      console.warn("Lỗi lấy userId từ AsyncStorage:", error);
     }
   };
 
+  // Lấy danh sách đánh giá sản phẩm
   const fetchFeedbacks = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/feedbacks/product/${productId}`);
       setFeedbacks(res.data || []);
     } catch (err) {
-      console.error("❌ Lỗi lấy đánh giá:", err);
     }
   };
 
+  // Kiểm tra sản phẩm có trong danh sách yêu thích không
   const checkIfFavorite = async () => {
     if (!userId) return;
 
@@ -111,10 +108,10 @@ export default function ProductDetailScreen({ route, navigation }: any) {
       const found = favorites.some((fav) => fav.product_id === productId);
       setIsFavorite(found);
     } catch (err) {
-      console.warn("Lỗi kiểm tra mục yêu thích:", err);
     }
   };
 
+  // Thêm sản phẩm vào giỏ hàng
   const handleAddToCart = async () => {
     if (!userId) {
       Alert.alert("Thông báo", "VUi lòng đăng nhập để tiếp tục");
@@ -133,12 +130,11 @@ export default function ProductDetailScreen({ route, navigation }: any) {
       });
       Alert.alert("✅ Thành công", "Sản phẩm đã được thêm vào giỏ hàng");
     } catch (err) {
-      console.error("❌ Lỗi thêm vào giỏ hàng:", err);
       Alert.alert("Lỗi", "Không thể thêm sản phẩm vào giỏ");
     }
   };
 
-  // Hàm xử lý toggle yêu thích, gọi API thêm hoặc xóa favorites
+  // Thêm/xóa sản phẩm khỏi danh sách yêu thích
   const handleToggleFavorite = async () => {
     if (!userId || !product) {
       Alert.alert("Thông báo", "Bạn cần đăng nhập để thực hiện thao tác này");
@@ -163,7 +159,6 @@ export default function ProductDetailScreen({ route, navigation }: any) {
         Alert.alert("Thông báo", "Đã thêm sản phẩm vào yêu thích");
       }
     } catch (error) {
-      console.error("Lỗi cập nhật yêu thích:", error);
       Alert.alert("Lỗi", "Không thể cập nhật yêu thích, vui lòng thử lại");
     }
   };
@@ -171,7 +166,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#ff6f61" />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
@@ -179,13 +174,13 @@ export default function ProductDetailScreen({ route, navigation }: any) {
   if (!product) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Không tìm thấy sản phẩm.</Text>
+        <Text style={{ color: theme.colors.text }}>Không tìm thấy sản phẩm.</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+    <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Image
         source={{
           uri: product.images
@@ -203,39 +198,39 @@ export default function ProductDetailScreen({ route, navigation }: any) {
 
       <View
         style={{
-          padding: 20,
-          backgroundColor: "#fff",
-          marginHorizontal: 16,
-          marginTop: -16,
-          borderRadius: 12,
+          padding: theme.spacing.xl,
+          backgroundColor: theme.colors.backgroundLight,
+          marginHorizontal: theme.spacing.lg,
+          marginTop: -theme.spacing.lg,
+          borderRadius: theme.borderRadius.lg,
         }}
       >
         <Text
           style={{
-            fontSize: 24,
-            fontWeight: "700",
-            color: "#2c3e50",
-            marginBottom: 12,
+            fontSize: theme.fontSize.xxxl,
+            fontWeight: theme.fontWeight.bold,
+            color: theme.colors.text,
+            marginBottom: theme.spacing.md,
           }}
         >
           {product.name}
         </Text>
         <Text
           style={{
-            fontSize: 22,
-            fontWeight: "600",
-            color: "#ff6f61",
-            marginBottom: 16,
+            fontSize: theme.fontSize.xxl,
+            fontWeight: theme.fontWeight.semibold,
+            color: theme.colors.accent,
+            marginBottom: theme.spacing.lg,
           }}
         >
           {product.price.toLocaleString()}₫
         </Text>
         <Text
           style={{
-            fontSize: 16,
-            color: "#777",
+            fontSize: theme.fontSize.lg,
+            color: theme.colors.textMuted,
             lineHeight: 24,
-            marginBottom: 20,
+            marginBottom: theme.spacing.xl,
           }}
         >
           {product.description}
@@ -246,7 +241,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
             style={styles.addToCartButton}
             onPress={handleAddToCart}
           >
-            <Text style={{ color: "#fff", fontSize: 18, fontWeight: "600" }}>
+            <Text style={{ color: theme.colors.textLight, fontSize: theme.fontSize.xl, fontWeight: theme.fontWeight.semibold }}>
               Thêm vào giỏ hàng
             </Text>
           </TouchableOpacity>
@@ -268,14 +263,14 @@ export default function ProductDetailScreen({ route, navigation }: any) {
 
       <View
         style={{
-          padding: 16,
-          backgroundColor: "#f5f5f5",
-          marginHorizontal: 16,
-          marginTop: 16,
-          borderRadius: 12,
+          padding: theme.spacing.lg,
+          backgroundColor: theme.colors.background,
+          marginHorizontal: theme.spacing.lg,
+          marginTop: theme.spacing.lg,
+          borderRadius: theme.borderRadius.lg,
         }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "600", marginBottom: 12 }}>
+        <Text style={{ fontSize: theme.fontSize.xxl, fontWeight: theme.fontWeight.semibold, marginBottom: theme.spacing.md, color: theme.colors.text }}>
           ⭐ Đánh giá sản phẩm
         </Text>
         {feedbacks.length > 0 ? (
@@ -283,35 +278,35 @@ export default function ProductDetailScreen({ route, navigation }: any) {
             <View
               key={idx}
               style={{
-                marginBottom: 16,
-                backgroundColor: "#fff",
-                borderRadius: 8,
-                padding: 12,
-                elevation: 2,
+                marginBottom: theme.spacing.lg,
+                backgroundColor: theme.colors.backgroundLight,
+                borderRadius: theme.borderRadius.md,
+                padding: theme.spacing.md,
+                ...theme.shadow.sm,
               }}
             >
-              <Text style={{ fontWeight: "600", fontSize: 16 }}>
+              <Text style={{ fontWeight: theme.fontWeight.semibold, fontSize: theme.fontSize.lg, color: theme.colors.text }}>
                 {item.name || "Người dùng ẩn danh"}
               </Text>
-              <Text style={{ marginTop: 4, color: "#555" }}>
+              <Text style={{ marginTop: theme.spacing.xs, color: theme.colors.textSecondary }}>
                 {item.feedback}
               </Text>
-              <Text style={{ marginTop: 4 }}>⭐ {item.star}</Text>
+              <Text style={{ marginTop: theme.spacing.xs, color: theme.colors.text }}>⭐ {item.star}</Text>
               {item.images ? (
                 <Image
                   source={{ uri: `${BASE_URL}/uploads/${item.images}` }}
                   style={{
                     width: 100,
                     height: 100,
-                    borderRadius: 8,
-                    marginTop: 6,
+                    borderRadius: theme.borderRadius.md,
+                    marginTop: theme.spacing.sm,
                   }}
                 />
               ) : null}
             </View>
           ))
         ) : (
-          <Text style={{ textAlign: "center", color: "#999" }}>
+          <Text style={{ textAlign: "center", color: theme.colors.textMuted }}>
             Chưa có đánh giá nào cho sản phẩm này.
           </Text>
         )}

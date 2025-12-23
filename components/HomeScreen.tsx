@@ -17,6 +17,7 @@ import Navbar from "./Navbar";
 import AddToCartScreen from "./AddToCartScreen";
 
 export default function HomeScreen({ route, navigation }: any) {
+  // State management
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
@@ -37,6 +38,8 @@ export default function HomeScreen({ route, navigation }: any) {
   const [loading, setLoading] = useState<boolean>(true);
   const [banners, setBanners] = useState<any[]>([]);
   const [showBannerAndCategories, setShowBannerAndCategories] = useState(true);
+
+  // Banner auto slide (mỗi 3 giây)
   useEffect(() => {
     if (banners.length <= 1) return; 
 
@@ -48,6 +51,8 @@ export default function HomeScreen({ route, navigation }: any) {
 
     return () => clearInterval(intervalId);
   }, [banners]);
+
+  // Lấy userId từ route params hoặc AsyncStorage
   useEffect(() => {
     if (route.params?.userId) {
       setUserId(route.params.userId);
@@ -60,13 +65,15 @@ export default function HomeScreen({ route, navigation }: any) {
     }
   }, [route.params]);
 
+  // Lấy danh sách categories
   useEffect(() => {
     axios
       .get(`${BASE_URL}/listcategories`)
       .then((res) => setCategories(res.data))
-      .catch((err) => console.error("Error fetching categories:", err));
+      .catch(() => {});
   }, []);
 
+  // Lấy danh sách sản phẩm theo category
   useEffect(() => {
     const url =
       selectedCategoryId !== null
@@ -80,10 +87,11 @@ export default function HomeScreen({ route, navigation }: any) {
         setFilteredProducts(res.data);
         setProductNameList(res.data.map((p: any) => p.name));
       })
-      .catch((err) => console.error("Error fetching products:", err))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, [selectedCategoryId]);
 
+  // Lấy top searches của user
   useEffect(() => {
     if (userId) {
       axios
@@ -91,12 +99,13 @@ export default function HomeScreen({ route, navigation }: any) {
           params: { limit: 4, userId: userId },
         })
         .then((res) => setTopSearches(res.data))
-        .catch((err) => console.error("Error fetching top searches:", err));
+        .catch(() => {});
     } else {
       setTopSearches([]);
     }
   }, [userId]);
 
+  // Tạo gợi ý tìm kiếm từ tên sản phẩm
   useEffect(() => {
     if (searchText.trim() === "") {
       setSearchSuggestions([]);
@@ -109,19 +118,22 @@ export default function HomeScreen({ route, navigation }: any) {
     }
   }, [searchText, productNameList]);
 
-  // Lấy banner
+  // Lấy danh sách banner
   useEffect(() => {
     axios
       .get(`${BASE_URL}/laybanners`)
       .then((res) => setBanners(res.data))
-      .catch((err) => console.error("Error fetching banners:", err));
+      .catch(() => {});
   }, []);
 
+  // Xóa nội dung tìm kiếm
   const clearSearch = () => {
     setSearchText("");
     setFilteredProducts(products);
     setIsSearchFocused(true);
   };
+
+  // Lưu từ khóa tìm kiếm vào database
   const saveSearchKeyword = (keyword: string) => {
     if (!userId) return;
     axios
@@ -129,8 +141,10 @@ export default function HomeScreen({ route, navigation }: any) {
         userId,
         searchContent: keyword,
       })
-      .catch((err) => console.error("Error saving search:", err));
+      .catch(() => {});
   };
+
+  // Xử lý tìm kiếm sản phẩm
   const handleSearch = async () => {
     const trimmed = searchText.trim();
 
@@ -159,10 +173,11 @@ export default function HomeScreen({ route, navigation }: any) {
         });
         setTopSearches(response.data);
       } catch (error) {
-        console.error("Failed to fetch top searches:", error);
       }
     }
   };
+
+  // Xử lý khi chọn gợi ý tìm kiếm
   const handleSelectSuggestion = async (keyword: string) => {
     setSearchText(keyword);
     saveSearchKeyword(keyword);
@@ -181,19 +196,22 @@ export default function HomeScreen({ route, navigation }: any) {
         });
         setTopSearches(response.data);
       } catch (error) {
-        console.error("Failed to fetch top searches:", error);
       }
     }
   };
+
+  // Mở modal thêm vào giỏ hàng
   const handleAddToCart = (item: any) => {
     setSelectedProductId(item.id);
     setShowAddToCart(true);
   };
 
+  // Điều hướng đến trang chi tiết sản phẩm
   const handleNavigateToDetail = (item: any) => {
     navigation.navigate("Chi Tiết Sản Phẩm", { productId: item.id });
   };
 
+  // Render category item
   const renderCategoryItem = ({ item }: any) => (
     <TouchableOpacity
       style={[
@@ -241,11 +259,19 @@ export default function HomeScreen({ route, navigation }: any) {
           onBlur={() => setIsSearchFocused(false)}
         />
         {searchText.length > 0 && (
-          <TouchableOpacity style={styles.clearButton} onPress={clearSearch}>
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={clearSearch}
+            activeOpacity={0.7}
+          >
             <Text style={styles.clearButtonText}>×</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={handleSearch}
+          activeOpacity={0.8}
+        >
           <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
@@ -333,12 +359,14 @@ export default function HomeScreen({ route, navigation }: any) {
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => handleAddToCart(item)}
+                    activeOpacity={0.7}
                   >
                     <Text style={styles.buttonText}>Add to Cart</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => handleNavigateToDetail(item)}
+                    activeOpacity={0.7}
                   >
                     <Text style={styles.buttonText}>Details</Text>
                   </TouchableOpacity>

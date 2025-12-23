@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { theme } from "../styles/theme";
 
 const RegisterScreen = () => {
   const [fullName, setFullName] = useState("");
@@ -55,7 +56,6 @@ const RegisterScreen = () => {
         Alert.alert("Lỗi", data.alert || "Có lỗi xảy ra. Vui lòng thử lại.");
       }
     } catch (error) {
-      console.error("Error:", error);
       Alert.alert("Lỗi", "Không thể kết nối đến máy chủ.");
     } finally {
       setLoading(false);
@@ -112,7 +112,7 @@ const RegisterScreen = () => {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={theme.colors.textLight} />
         ) : (
           <Text style={styles.buttonText}>Đăng ký</Text>
         )}

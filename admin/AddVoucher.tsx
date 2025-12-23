@@ -15,6 +15,13 @@ import { BASE_URL } from "../ipconfig";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 
+/**
+ * ADD VOUCHER - Thêm voucher mới
+ * - Nhập mã giảm giá, % giảm giá, số lượng
+ * - Chọn ngày bắt đầu và kết thúc
+ * - Tạo voucher mới
+ */
+
 type AddVoucherScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Thêm Khuyến Mãi"

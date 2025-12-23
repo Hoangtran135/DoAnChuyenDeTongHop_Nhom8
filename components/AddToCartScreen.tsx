@@ -15,11 +15,11 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const colors = {
-  primary: "#6A0DAD", // Buttons
-  accent: "#ff6f61", // Price
-  background: "#ffffff", // Modal background
-  text: "#2c3e50", // Primary text
-  muted: "#777", // Secondary text
+  primary: "#6A0DAD",
+  accent: "#ff6f61",
+  background: "#ffffff",
+  text: "#2c3e50",
+  muted: "#777",
 };
 
 interface AddToCartScreenProps {
@@ -36,16 +36,18 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
   productId,
   navigation, // có thể có hoặc không
 }) => {
+  // State management
   const [product, setProduct] = useState<any>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [userId, setUserId] = useState<number | null>(null);
 
+  // Lấy thông tin sản phẩm và userId khi modal mở
   useEffect(() => {
     if (productId && visible) {
       axios
         .get(`${BASE_URL}/products/${productId}`)
         .then((res) => setProduct(res.data))
-        .catch((err) => console.error("❌ Lỗi lấy sản phẩm:", err));
+        .catch(() => {});
 
       AsyncStorage.getItem("userId").then((id) => {
         if (id) {
@@ -55,6 +57,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
     }
   }, [productId, visible]);
 
+  // Thêm sản phẩm vào giỏ hàng
   const handleAddToCart = () => {
     if (!userId || !product) {
       Alert.alert("Thông báo", "Vui lòng đăng nhập để tiếp tục");
@@ -78,15 +81,16 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
         onClose();
       })
       .catch((err) => {
-        console.error("❌ Lỗi thêm vào cart_items:", err);
         Alert.alert("❌ Lỗi khi thêm vào giỏ hàng");
       });
   };
 
+  // Tăng số lượng
   const handleIncrease = () => {
     setQuantity((prev) => prev + 1);
   };
 
+  // Giảm số lượng (tối thiểu là 1)
   const handleDecrease = () => {
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
@@ -97,6 +101,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent
     >
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.overlay}>
@@ -130,6 +135,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
                       <TouchableOpacity
                         style={styles.quantityButton}
                         onPress={handleDecrease}
+                        activeOpacity={0.7}
                       >
                         <Text style={styles.quantityButtonText}>−</Text>
                       </TouchableOpacity>
@@ -137,6 +143,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
                       <TouchableOpacity
                         style={styles.quantityButton}
                         onPress={handleIncrease}
+                        activeOpacity={0.7}
                       >
                         <Text style={styles.quantityButtonText}>+</Text>
                       </TouchableOpacity>
@@ -145,6 +152,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
                     <TouchableOpacity
                       onPress={handleAddToCart}
                       style={styles.confirmButton}
+                      activeOpacity={0.8}
                     >
                       <Text style={styles.buttonText}>Xác nhận</Text>
                     </TouchableOpacity>

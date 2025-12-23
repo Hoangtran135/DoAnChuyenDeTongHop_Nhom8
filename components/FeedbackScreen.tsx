@@ -40,10 +40,7 @@ export default function FeedbackScreen({
 }: FeedbackScreenProps) {
   const { orderId, userId } = route.params;
 
-  // Log để kiểm tra dữ liệu đầu vào
-  console.log("orderId:", orderId);
-  console.log("userId:", userId);
-
+  // State management
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -51,7 +48,7 @@ export default function FeedbackScreen({
 
   const stars = [1, 2, 3, 4, 5];
 
-  // Chọn ảnh từ thư viện
+  // Chọn ảnh từ thư viện để đính kèm vào đánh giá
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -74,10 +71,10 @@ export default function FeedbackScreen({
         setImage(result.assets[0].uri);
       }
     } catch (error) {
-      console.error("Lỗi khi chọn ảnh:", error);
     }
   };
 
+  // Gửi đánh giá sản phẩm lên server
   const submitFeedback = async () => {
     if (rating === 0) {
       Alert.alert("Lỗi", "Vui lòng chọn số sao đánh giá");
@@ -112,7 +109,6 @@ export default function FeedbackScreen({
       Alert.alert("Thành công", "Cảm ơn bạn đã gửi phản hồi!");
       navigation.goBack();
     } catch (error) {
-      console.error("Lỗi khi gửi phản hồi:", error);
       Alert.alert("Lỗi", "Gửi phản hồi thất bại. Vui lòng thử lại.");
     } finally {
       setLoading(false);

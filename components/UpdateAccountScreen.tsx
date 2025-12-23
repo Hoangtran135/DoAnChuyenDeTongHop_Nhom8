@@ -14,12 +14,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const colors = {
-  primary: "#6A0DAD", // Button
-  accent: "#ff6f61", // Not used here but included for consistency
-  secondary: "#27ae60", // Not used here but included for consistency
+  primary: "#6A0DAD",
   background: "#f9f9f9",
-  text: "#2c3e50", // Primary text
-  muted: "#777", // Secondary text and icons
+  text: "#2c3e50",
+  muted: "#777",
 };
 
 type UserInfo = {
@@ -31,9 +29,11 @@ type UserInfo = {
 };
 
 export default function UpdateAccountScreen({ navigation }: any) {
+  // State management
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Lấy thông tin user từ API
   useEffect(() => {
     const fetchUserInfo = async () => {
       const userId = await AsyncStorage.getItem("userId");
@@ -47,7 +47,6 @@ export default function UpdateAccountScreen({ navigation }: any) {
             navigation.goBack();
           }
         } catch (error) {
-          console.error("Lỗi khi lấy dữ liệu người dùng:", error);
           Alert.alert("Lỗi", "Không thể lấy dữ liệu người dùng");
         }
       } else {
@@ -60,6 +59,7 @@ export default function UpdateAccountScreen({ navigation }: any) {
     fetchUserInfo();
   }, [navigation]);
 
+  // Cập nhật thông tin user
   const handleUpdate = () => {
     if (!userInfo) {
       Alert.alert("Lỗi", "Không có thông tin người dùng");
@@ -87,7 +87,6 @@ export default function UpdateAccountScreen({ navigation }: any) {
         }
       })
       .catch((error) => {
-        console.error("Lỗi khi cập nhật dữ liệu người dùng:", error);
         Alert.alert("Lỗi", "Không thể cập nhật thông tin");
       });
   };
@@ -191,7 +190,7 @@ export default function UpdateAccountScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background, // #f9f9f9
+    backgroundColor: colors.background,
     paddingHorizontal: 20,
     paddingTop: 40,
   },
@@ -206,16 +205,16 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 18,
-    color: colors.muted, // #777
+    color: colors.muted,
   },
   errorText: {
     fontSize: 18,
-    color: colors.muted, // #777
+    color: colors.muted,
   },
   header: {
     fontSize: 28,
     fontWeight: "700",
-    color: colors.text, // #2c3e50
+    color: colors.text,
     textAlign: "center",
     marginBottom: 24,
     letterSpacing: 0.5,
@@ -248,10 +247,10 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 16,
-    color: colors.text, // #2c3e50
+    color: colors.text,
   },
   updateButton: {
-    backgroundColor: colors.primary, // #6A0DAD
+    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: "center",

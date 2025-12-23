@@ -12,6 +12,13 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * ADD CATEGORY ADMIN - Thêm danh mục mới
+ * - Nhập tên danh mục
+ * - Chọn ảnh danh mục
+ * - Tạo danh mục mới
+ */
+
 const colors = {
   primary: "#000000",
   background: "#FFFFFF",

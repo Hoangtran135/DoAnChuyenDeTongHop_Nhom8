@@ -36,12 +36,14 @@ export default function OrderDetailScreen({ route }: any) {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  const navigation = useNavigation<OrderDetailScreenNavigationProp>(); 
+  const navigation = useNavigation<OrderDetailScreenNavigationProp>();
 
+  // Load chi tiết đơn hàng khi component mount
   useEffect(() => {
     fetchOrderDetail();
   }, [orderId]);
 
+  // Lấy chi tiết đơn hàng từ API
   const fetchOrderDetail = async () => {
     setLoading(true);
     setError("");
@@ -60,13 +62,13 @@ export default function OrderDetailScreen({ route }: any) {
         setError(data.message || "Không thể tải chi tiết đơn hàng");
       }
     } catch (err) {
-      console.error(" Lỗi khi tải chi tiết đơn hàng:", err);
       setError("Không thể kết nối tới máy chủ");
     } finally {
       setLoading(false);
     }
   };
 
+  // Xóa sản phẩm khỏi đơn hàng
   const handleDeleteItem = async (orderDetailId: number) => {
     Alert.alert(
       "Xác nhận",
@@ -104,7 +106,6 @@ export default function OrderDetailScreen({ route }: any) {
                 Alert.alert("Lỗi", result.message || "Xóa thất bại");
               }
             } catch (err) {
-              console.error(" Lỗi khi xóa sản phẩm:", err);
               Alert.alert("Lỗi", "Không thể xóa sản phẩm");
             }
           },

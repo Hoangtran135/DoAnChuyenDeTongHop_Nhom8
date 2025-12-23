@@ -17,6 +17,13 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 
+/**
+ * PRODUCT MANAGEMENT ADMIN - Quản lý sản phẩm
+ * - Hiển thị danh sách sản phẩm
+ * - Thêm, sửa, xóa sản phẩm
+ * - Tìm kiếm sản phẩm
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -59,7 +66,6 @@ export default function ProductManagementAdmin({ navigation }: any) {
       setProducts(response.data);
       setFilteredProducts(response.data);
     } catch (err) {
-      console.error("Lỗi khi tải danh sách sản phẩm:", err);
       Alert.alert("Lỗi", "Không thể tải danh sách sản phẩm. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);

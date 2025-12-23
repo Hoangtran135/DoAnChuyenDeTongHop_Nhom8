@@ -9,6 +9,12 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 
+/**
+ * HOME ADMIN SCREEN - Trang chủ admin
+ * - Hiển thị menu điều hướng
+ * - Quản lý navbar
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",

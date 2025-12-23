@@ -14,6 +14,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * ADD BANNER - Thêm banner mới
+ * - Chọn ảnh banner
+ * - Upload banner lên server
+ */
+
 type AddBannerScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Thêm Banner"
@@ -83,7 +89,6 @@ export default function AddBanner() {
       setImage(null);
       navigation.replace("Quản Lý Banner");
     } catch (error) {
-      console.error("Lỗi khi thêm banner:", error);
       Alert.alert("Lỗi", "Không thể thêm banner");
     } finally {
       setUploading(false);

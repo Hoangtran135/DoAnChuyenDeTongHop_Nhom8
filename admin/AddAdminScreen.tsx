@@ -12,6 +12,12 @@ import {
 } from "react-native";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * ADD ADMIN SCREEN - Thêm admin mới
+ * - Nhập thông tin admin
+ * - Tạo tài khoản admin mới
+ */
+
 export default function AddAdminScreen({ navigation }: any) {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -61,7 +67,6 @@ export default function AddAdminScreen({ navigation }: any) {
         Alert.alert("Lỗi", data.alert || "Không thể tạo tài khoản.");
       }
     } catch (error) {
-      console.error("Lỗi khi thêm admin:", error);
       Alert.alert("Lỗi", "Không thể kết nối đến máy chủ.");
     } finally {
       setLoading(false);

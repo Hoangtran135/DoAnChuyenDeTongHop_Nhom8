@@ -14,6 +14,12 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+/**
+ * ADMIN MANAGEMENT - Quản lý admin
+ * - Hiển thị danh sách admin
+ * - Thêm, sửa, xóa admin
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -44,7 +50,6 @@ export default function AdminManagement({ navigation }: any) {
       const response = await axios.get(`${BASE_URL}/users?role=1&role1=1`);
       setAdmins(response.data);
     } catch (err) {
-      console.error("Lỗi khi tải danh sách Admin:", err);
       Alert.alert("Lỗi", "Không thể tải danh sách Admin. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);

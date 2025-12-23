@@ -14,6 +14,12 @@ import {
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * UPDATE ADMIN SCREEN - Cập nhật thông tin admin
+ * - Load thông tin admin hiện tại
+ * - Cập nhật username, fullName, email, phone
+ */
+
 type AdminInfo = {
   id: string;
   username: string;

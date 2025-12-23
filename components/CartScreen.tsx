@@ -41,11 +41,12 @@ type Props = {
 };
 
 export default function CartScreen({ navigation }: Props) {
+  // State management
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // Cập nhật tiêu đề navigation dựa trên số lượng sản phẩm trong giỏ hàng
+  // Cập nhật tiêu đề navigation theo số lượng sản phẩm
   useLayoutEffect(() => {
     const count = cartItems.length;
     navigation.setOptions({
@@ -53,12 +54,14 @@ export default function CartScreen({ navigation }: Props) {
     });
   }, [navigation, cartItems]);
 
+  // Lấy userId từ AsyncStorage
   useEffect(() => {
     AsyncStorage.getItem("userId").then((id) => {
       if (id) setUserId(parseInt(id, 10));
     });
   }, []);
 
+  // Lấy danh sách sản phẩm trong giỏ hàng
   useEffect(() => {
     if (userId === null) return;
 
@@ -69,7 +72,6 @@ export default function CartScreen({ navigation }: Props) {
         return res.json();
       })
       .then((data) => {
-        console.log("Cart data loaded:", data);
         setCartItems(data);
       })
       .catch((error) => {
@@ -79,33 +81,36 @@ export default function CartScreen({ navigation }: Props) {
         setLoading(false);
       });
   }, [userId]);
+
+  // Kiểm tra đăng nhập
   if (!userId) {
     return <NotLoggedIn navigation={navigation} />;
   }
+
+  // Tính tổng tiền
   const getTotalAmount = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
   };
+
+  // Thay đổi số lượng sản phẩm (tăng/giảm)
   const handleQuantityChange = async (productId: number, change: number) => {
-    console.log("handleQuantityChange called with:", { productId, change });
     const updatedItem = cartItems.find((item) => item.product_id === productId);
     if (!updatedItem) {
-      console.log(`Product with id ${productId} not found in cartItems`);
       return;
     }
     const newQuantity = Math.max(1, updatedItem.quantity + change);
-    console.log(`Calculated new quantity: ${newQuantity}`);
+    
     try {
       setLoading(true);
-      console.log("Sending PUT request to update cart...");
       const res = await axios.put(`${BASE_URL}/cart`, {
         cart_id: updatedItem.cart_id,
         product_id: productId,
         quantity: newQuantity,
       });
-      console.log("Response from server:", res.status, res.data);
+      
       if (res.status === 200) {
         setCartItems((prevItems) =>
           prevItems.map((item) =>
@@ -114,23 +119,20 @@ export default function CartScreen({ navigation }: Props) {
               : item
           )
         );
-        console.log(`Quantity updated locally for product ${productId}`);
       } else {
-        console.log("Error updating quantity:", res.data?.message);
         Alert.alert("Lỗi", res.data?.message || "Không thể cập nhật số lượng.");
       }
     } catch (error: any) {
-      console.error("Exception in handleQuantityChange:", error);
       Alert.alert(
         "Lỗi",
         error.response?.data?.message || "Không thể kết nối tới server."
       );
     } finally {
       setLoading(false);
-      console.log("Loading state set to false");
     }
   };
 
+  // Xóa sản phẩm khỏi giỏ hàng
   const handleRemoveCartItem = async (cartId: string) => {
     Alert.alert(
       "Xác nhận",
@@ -178,7 +180,6 @@ export default function CartScreen({ navigation }: Props) {
                 );
               }
             } catch (error: any) {
-              console.error(error);
               Alert.alert(
                 "Lỗi",
                 error.response?.data?.message || "Không thể kết nối tới server."
@@ -192,6 +193,7 @@ export default function CartScreen({ navigation }: Props) {
     );
   };
 
+  // Điều hướng đến trang đặt hàng
   const handleCheckout = () => {
     const totalAmount = getTotalAmount();
     if (totalAmount === 0) {
@@ -201,6 +203,7 @@ export default function CartScreen({ navigation }: Props) {
     navigation.navigate("Tạo Đơn Hàng", { userId, totalAmount });
   };
 
+  // Render cart item
   const renderItem = ({ item }: { item: CartItem }) => (
     <View style={styles.item}>
       <Image
@@ -222,6 +225,7 @@ export default function CartScreen({ navigation }: Props) {
           <TouchableOpacity
             onPress={() => handleQuantityChange(item.product_id, -1)}
             style={styles.quantityButton}
+            activeOpacity={0.7}
           >
           <Text style={styles.quantityButtonText}>-</Text>
           </TouchableOpacity>
@@ -229,6 +233,7 @@ export default function CartScreen({ navigation }: Props) {
           <TouchableOpacity
            onPress={() => handleQuantityChange(item.product_id, 1)}
            style={styles.quantityButton}
+           activeOpacity={0.7}
           >
            <Text style={styles.quantityButtonText}>+</Text>
           </TouchableOpacity>
@@ -239,6 +244,7 @@ export default function CartScreen({ navigation }: Props) {
       <TouchableOpacity
         onPress={() => handleRemoveCartItem(item.cart_id)}
         style={styles.deleteButton}
+        activeOpacity={0.7}
       >
         <Text style={styles.deleteButtonText}>Xóa</Text>
       </TouchableOpacity>
@@ -264,7 +270,7 @@ export default function CartScreen({ navigation }: Props) {
         data={cartItems}
         keyExtractor={(item, index) => `${item.cart_id}_${item.product_id}`}
         renderItem={renderItem}
-        contentContainerStyle={{ paddingBottom: 150 }}
+        contentContainerStyle={{ paddingBottom: 140 }}
         ListEmptyComponent={() => (
           <View style={{ padding: 20, alignItems: "center" }}>
             <Text>Giỏ hàng của bạn đang trống.</Text>
@@ -279,12 +285,15 @@ export default function CartScreen({ navigation }: Props) {
           <TouchableOpacity
             style={styles.checkoutButton}
             onPress={handleCheckout}
+            activeOpacity={0.8}
           >
             <Text style={styles.checkoutButtonText}>
               Mua hàng ({cartItems.length})
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={styles.navbarContainer}>
         <Navbar navigation={navigation} userId={userId} />
       </View>
     </View>
@@ -347,7 +356,7 @@ const styles = StyleSheet.create({
   voucherText: { color: "#6A0DAD", fontWeight: "bold" },
   footerContainer: {
     position: "absolute",
-    bottom: 0,
+    bottom: 60,
     left: 0,
     right: 0,
     backgroundColor: "#fff",
@@ -355,6 +364,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
+  },
+  navbarContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
   },
   totalContainer: {
     flexDirection: "row",

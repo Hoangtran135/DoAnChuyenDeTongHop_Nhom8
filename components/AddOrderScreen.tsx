@@ -4,7 +4,6 @@ import { BASE_URL } from "../ipconfig";
 
 const colors = {
   primary: "#6A0DAD",
-  secondary: "#6A0DAD",
   background: "#f8f9fa",
   text: "#2c3e50",
   muted: "#777",
@@ -25,13 +24,12 @@ export default function AddOrderScreen({ route, navigation }: any) {
 
   const finalAmount = Math.round(totalAmount * (1 - discountAmount / 100));
 
+  // Lấy thông tin user và sản phẩm trong giỏ hàng
   useEffect(() => {
     const fetchOrderInfo = async () => {
       try {
-        console.log("Fetching order info for userId:", userId);
         const response = await fetch(`${BASE_URL}/order-info?userId=${userId}`);
         const data = await response.json();
-        console.log("Order info data:", data);
 
         if (response.ok) {
           setUser(data.user || {});
@@ -47,6 +45,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
     fetchOrderInfo();
   }, []);
 
+  // Chọn voucher giảm giá
   const handleSelectVoucher = () => {
     navigation.navigate("Chọn Khuyến Mãi", {
       userId,
@@ -57,6 +56,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
     });
   };
 
+  // Tạo đơn hàng mới
   const handlePlaceOrder = async () => {
     if (!selectedMethod) {
       Alert.alert("Thông báo", "Vui lòng chọn phương thức thanh toán!");
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 18,
     fontWeight: "700",
-    color: colors.secondary,
+    color: colors.primary,
   },
   confirmButton: {
     backgroundColor: colors.primary,

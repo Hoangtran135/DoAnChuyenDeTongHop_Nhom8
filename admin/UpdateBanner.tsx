@@ -14,6 +14,12 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BASE_URL } from "../ipconfig";
 import { RootStackParamList } from "../types";
 
+/**
+ * UPDATE BANNER - Cập nhật banner
+ * - Load thông tin banner hiện tại
+ * - Cập nhật ảnh banner
+ */
+
 type UpdateBannerNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Cập Nhật Banner"

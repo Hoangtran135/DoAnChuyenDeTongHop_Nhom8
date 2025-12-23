@@ -14,6 +14,12 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
+/**
+ * CATEGORY MANAGEMENT ADMIN - Quản lý danh mục
+ * - Hiển thị danh sách danh mục
+ * - Thêm, sửa, xóa danh mục
+ */
+
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -44,7 +50,6 @@ const CategoryManagementAdmin = ({ navigation }: { navigation: any }) => {
       const res = await axios.get(`${BASE_URL}/categories`);
       setCategories(res.data);
     } catch (err) {
-      console.error("Lỗi khi lấy danh mục:", err);
       Alert.alert("Lỗi", "Không thể tải danh sách danh mục. Vui lòng thử lại sau.");
     } finally {
       setLoading(false);

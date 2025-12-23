@@ -12,15 +12,7 @@ import {
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
-
-const colors = {
-  primary: "#6A0DAD", // Button
-  accent: "#ff6f61", // Highlights
-  secondary: "#27ae60",
-  background: "#f9f9f9",
-  text: "#2c3e50",
-  muted: "#777",
-};
+import { theme } from "../styles/theme";
 
 export default function LoginScreen({ navigation }: any) {
   const [username, setUsername] = useState("");
@@ -54,7 +46,6 @@ export default function LoginScreen({ navigation }: any) {
         }
       })
       .catch((err) => {
-        console.log(err);
         Alert.alert("Lỗi", "Đăng Nhập Thất Bại.");
       });
   };
@@ -68,7 +59,7 @@ export default function LoginScreen({ navigation }: any) {
           value={username}
           onChangeText={setUsername}
           placeholder="Nhập tên đăng nhập"
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={theme.colors.textMuted}
           style={styles.input}
         />
 
@@ -78,7 +69,7 @@ export default function LoginScreen({ navigation }: any) {
           onChangeText={setPassword}
           secureTextEntry
           placeholder="Nhập mật khẩu"
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={theme.colors.textMuted}
           style={styles.input}
         />
 
@@ -110,52 +101,48 @@ export default function LoginScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: theme.spacing.xl,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: colors.text,
-    marginBottom: 40,
+    fontSize: theme.fontSize.xxxl,
+    fontWeight: theme.fontWeight.bold,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.xxxl,
     letterSpacing: 0.5,
   },
   form: {
     width: "90%",
-    backgroundColor: "#ffffff",
-    borderRadius: 12,
-    padding: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 4,
+    backgroundColor: theme.colors.backgroundLight,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing.xxl,
+    ...theme.shadow.md,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text,
-    marginBottom: 8,
+    fontSize: theme.fontSize.lg,
+    fontWeight: theme.fontWeight.semibold,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.sm,
   },
   input: {
     height: 50,
     borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    color: colors.text,
-    backgroundColor: "#fafafa",
-    marginBottom: 20,
+    borderColor: theme.colors.border,
+    borderRadius: theme.borderRadius.md,
+    paddingHorizontal: theme.spacing.lg,
+    fontSize: theme.fontSize.lg,
+    color: theme.colors.text,
+    backgroundColor: theme.colors.backgroundGray,
+    marginBottom: theme.spacing.xl,
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 10,
-    marginBottom: 20,
-    backgroundColor: "#fafafa",
+    borderColor: theme.colors.border,
+    borderRadius: theme.borderRadius.md,
+    marginBottom: theme.spacing.xl,
+    backgroundColor: theme.colors.backgroundGray,
     overflow: "hidden",
     height: 50,
     justifyContent: "center",
@@ -165,32 +152,28 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pickerItem: {
-    fontSize: 16,
-    color: colors.text,
+    fontSize: theme.fontSize.lg,
+    color: theme.colors.text,
     height: 50,
   },
   button: {
-    backgroundColor: colors.primary,
-    paddingVertical: 14,
-    borderRadius: 12,
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing.md,
+    borderRadius: theme.borderRadius.lg,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4,
+    ...theme.shadow.md,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#ffffff",
+    fontSize: theme.fontSize.xl,
+    fontWeight: theme.fontWeight.semibold,
+    color: theme.colors.textLight,
     letterSpacing: 0.5,
   },
   footerText: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: colors.primary,
+    fontSize: theme.fontSize.md,
+    fontWeight: theme.fontWeight.medium,
+    color: theme.colors.primary,
     textAlign: "center",
-    marginTop: 16,
+    marginTop: theme.spacing.lg,
   },
 });

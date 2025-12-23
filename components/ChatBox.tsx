@@ -33,20 +33,22 @@ type Props = {
 
 export default function ChatBox({ route }: Props) {
   const { conversationId, userId } = route.params;
+  // State management
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMsg, setNewMsg] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
+  // Load danh sách tin nhắn trong cuộc trò chuyện
   const loadMessages = () => {
     axios
       .get<Message[]>(`${BASE_URL}/api/messages/${conversationId}`)
       .then((res) => {
-        console.log('Tin nhắn nhận:', res.data);
         setMessages(res.data);
       })
-      .catch((error) => console.error('Load messages error:', error));
+      .catch(() => {});
   };
 
+  // Gửi tin nhắn mới
   const sendMessage = () => {
     if (newMsg.trim() === '') return;
 
@@ -60,9 +62,10 @@ export default function ChatBox({ route }: Props) {
         setNewMsg('');
         loadMessages();
       })
-      .catch((error) => console.error('Send message error:', error));
+      .catch(() => {});
   };
 
+  // Tự động load tin nhắn mới mỗi giây
   useEffect(() => {
     loadMessages();
     const interval = setInterval(loadMessages, 1000);

@@ -13,6 +13,12 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * UPDATE CATEGORY ADMIN - Cập nhật danh mục
+ * - Load thông tin danh mục hiện tại
+ * - Cập nhật tên và ảnh danh mục
+ */
+
 const colors = {
   primary: "#1C2526", // màu đen than
   background: "#FFFFFF",
@@ -115,7 +121,7 @@ const UpdateCategoryAdmin = ({
         setName(res.data.name);
         setOldImage(res.data.image);
       })
-      .catch((err) => console.log("Lỗi khi lấy danh mục:", err));
+      .catch(() => {});
   }, [categoryId]);
 
   const pickImage = async () => {
@@ -167,7 +173,6 @@ const UpdateCategoryAdmin = ({
       Alert.alert("Thành công", "Cập nhật danh mục thành công");
       navigation.replace("Quản Lý Danh Mục");
     } catch (err) {
-      console.log(err);
       Alert.alert("Lỗi", "Không thể cập nhật danh mục");
     } finally {
       setUploading(false);

@@ -14,6 +14,12 @@ import { BASE_URL } from "../ipconfig";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 
+/**
+ * UPDATE PRODUCT ADMIN - Cập nhật sản phẩm
+ * - Load thông tin sản phẩm hiện tại
+ * - Cập nhật tên, giá, mô tả, danh mục, ảnh
+ */
+
 const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any }) => {
   const { productId } = route.params;
   const [name, setName] = useState("");
@@ -35,7 +41,7 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
         setCategoryId(product.category_id.toString()); // Đảm bảo dạng string
         setImageUri(product.image);
       })
-      .catch((err) => console.log("Lỗi khi lấy sản phẩm:", err));
+      .catch(() => {});
   }, [productId]);
 
   // Lấy danh sách danh mục
@@ -46,7 +52,6 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
         setCategories(res.data);
       })
       .catch((err) => {
-        console.log("Lỗi khi lấy danh mục:", err);
         Alert.alert("Lỗi", "Không thể tải danh mục sản phẩm.");
       });
   }, []);
@@ -97,7 +102,6 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
       navigation.replace("Quản Lý Sản Phẩm");
     } catch (err) {
       Alert.alert("Lỗi", "Không thể cập nhật sản phẩm. Vui lòng thử lại sau.");
-      console.log("Lỗi khi cập nhật sản phẩm:", err);
     }
   };
 

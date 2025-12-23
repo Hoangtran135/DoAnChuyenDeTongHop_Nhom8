@@ -13,6 +13,12 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../ipconfig';
 
+/**
+ * CHAT BOX ADMIN - Chat với user
+ * - Hiển thị tin nhắn trong cuộc trò chuyện
+ * - Gửi tin nhắn đến user
+ */
+
 type Props = {
   route: any;
   navigation: any;
@@ -41,12 +47,8 @@ export default function ChatBoxAdmin({ route }: Props) {
         if (storedUserId) {
           const parsedUserId = parseInt(storedUserId, 10);
           setUserId(parsedUserId);
-          console.log('userId lấy từ AsyncStorage:', parsedUserId);
-        } else {
-          console.log('Chưa có userId trong AsyncStorage');
         }
       } catch (error) {
-        console.error('Lỗi lấy userId từ AsyncStorage:', error);
       }
     };
     fetchUserId();
@@ -56,16 +58,13 @@ export default function ChatBoxAdmin({ route }: Props) {
     try {
       const res = await axios.get(`${BASE_URL}/api/messagesadmin/${conversationId}`);
       setMessages(res.data);
-      console.log('Tin nhắn tải về:', res.data);
     } catch (err) {
-      console.error('Lỗi khi tải tin nhắn:', err);
     }
   };
 
   const sendMessage = async () => {
     if (input.trim() === '') return;
 
-    console.log('Gửi tin nhắn với userId:', userId);
 
     try {
       await axios.post(`${BASE_URL}/api/messagesadmin`, {
@@ -77,7 +76,6 @@ export default function ChatBoxAdmin({ route }: Props) {
       setInput('');
       fetchMessages();
     } catch (err) {
-      console.error('Lỗi khi gửi tin nhắn:', err);
     }
   };
 

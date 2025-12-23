@@ -15,9 +15,11 @@ type Conversation = {
 };
 
 export default function ChatPage({ navigation }: Props) {
+  // State management
   const [userId, setUserId] = useState<number | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
+  // Lấy userId và load danh sách cuộc trò chuyện
   useEffect(() => {
     AsyncStorage.getItem('userId').then((id) => {
       if (id) {
@@ -28,6 +30,7 @@ export default function ChatPage({ navigation }: Props) {
     });
   }, []);
 
+  // Lấy danh sách cuộc trò chuyện của user
   const fetchConversations = (uid: number) => {
     axios
       .get<Conversation[]>(`${BASE_URL}/api/conversations/user/${uid}`)
@@ -35,23 +38,20 @@ export default function ChatPage({ navigation }: Props) {
         setConversations(res.data);
       })
       .catch((error) => {
-        console.error('Fetch conversations error:', error);
       });
   };
 
+  // Tạo cuộc trò chuyện mới với admin
   const createConversation = () => {
     if (!userId) {
-      console.warn('UserId chưa được load');
       return;
     }
 
-    console.log('Creating conversation for user_id:', userId);
 
     axios
       .post(`${BASE_URL}/api/conversations`, { user_id: userId })
       .then((res) => {
         const newConv = res.data;
-        console.log('New conversation created:', newConv);
         fetchConversations(userId);
         navigation.navigate('Chat Box', {
           conversationId: newConv.id,
@@ -59,10 +59,10 @@ export default function ChatPage({ navigation }: Props) {
         });
       })
       .catch((error) => {
-        console.error('Create conversation error:', error);
       });
   };
 
+  // Render conversation item
   const renderConversation = ({ item }: { item: Conversation }) => (
     <TouchableOpacity
       style={styles.conversationItem}

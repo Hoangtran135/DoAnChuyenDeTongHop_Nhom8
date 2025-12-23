@@ -18,11 +18,13 @@ import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/Ionicons";
 
 export default function AccountScreen({ navigation }: any) {
+  // State management
   const [userInfo, setUserInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
+  // Lấy thông tin user từ API
   useEffect(() => {
     setLoading(true);
     AsyncStorage.getItem("userId")
@@ -54,6 +56,7 @@ export default function AccountScreen({ navigation }: any) {
       });
   }, [navigation]);
 
+  // Đăng xuất và xóa thông tin user
   const handleLogout = () => {
     setLoading(true);
     AsyncStorage.removeItem("userId")
@@ -68,10 +71,12 @@ export default function AccountScreen({ navigation }: any) {
       .finally(() => setLoading(false));
   };
 
+  // Điều hướng đến trang cập nhật thông tin
   const handleUpdate = () => {
     navigation.navigate("Cập Nhật Tài Khoản");
   };
 
+  // Điều hướng đến trang voucher
   const handleVoucher = () => {
     navigation.navigate("Khuyến Mãi");
   };
@@ -234,7 +239,7 @@ export default function AccountScreen({ navigation }: any) {
         </View>
       </ScrollView>
 
-      <View style={styles.footer}>
+      <View style={styles.navbarContainer}>
         <Navbar navigation={navigation} />
       </View>
     </View>
@@ -362,10 +367,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
   },
-  footer: {
+  navbarContainer: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
+    backgroundColor: "#fff",
   },
 });

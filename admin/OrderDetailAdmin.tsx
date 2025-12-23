@@ -10,6 +10,12 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
+/**
+ * ORDER DETAIL ADMIN - Chi tiết đơn hàng
+ * - Hiển thị thông tin đơn hàng
+ * - Danh sách sản phẩm trong đơn hàng
+ */
+
 type OrderDetail = {
   product_name: string;
   quantity: number;
@@ -35,11 +41,9 @@ const OrderDetailAdmin = () => {
   useEffect(() => {
     const fetchOrderDetail = async () => {
       try {
-        console.log("Fetching order details for orderId:", orderId);
         const response = await axios.get(
           `${BASE_URL}/orders/${orderId}/detail`
         );
-        console.log("Dữ liệu nhận được từ API:", response.data);
 
         if (
           response.data &&
@@ -51,10 +55,8 @@ const OrderDetailAdmin = () => {
             items: response.data.orderDetails,
           });
         } else {
-          console.log("Không có dữ liệu chi tiết đơn hàng");
         }
       } catch (error) {
-        console.error("Lỗi khi lấy chi tiết đơn hàng:", error);
       } finally {
         setLoading(false);
       }
@@ -72,7 +74,6 @@ const OrderDetailAdmin = () => {
   }
 
   if (!order) {
-    console.log("Không tìm thấy đơn hàng");
     return (
       <View style={styles.center}>
         <Text style={styles.errorText}> không tìm thấy đơn hàng.</Text>
@@ -88,7 +89,6 @@ const OrderDetailAdmin = () => {
     currency: "VND",
   }).format(Number(order.totalPrice));
 
-  console.log("Thông tin đơn hàng:", order);
 
   return (
     <View style={styles.container}>
@@ -105,7 +105,6 @@ const OrderDetailAdmin = () => {
         data={order.items}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
-          console.log("Sản phẩm trong đơn hàng:", item);
           return (
             <View style={styles.item}>
               <Text style={styles.itemText}>Sản phẩm: {item.product_name}</Text>

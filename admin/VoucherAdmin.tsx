@@ -10,10 +10,17 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { BASE_URL } from "../ipconfig";
-import Navbar from "./Navbar"; // đường dẫn component Navbar của bạn
+import Navbar from "./Navbar";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../types";
 import { useNavigation } from "@react-navigation/native";
+
+/**
+ * VOUCHER ADMIN - Quản lý voucher khuyến mãi
+ * - Hiển thị danh sách voucher
+ * - Lọc voucher theo trạng thái (all/active/expired)
+ * - Thêm voucher mới
+ */
 
 type VoucherAdminNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -41,13 +48,11 @@ export default function VoucherAdmin() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
 
   const toggleNavbar = () => {
-    console.log("Navbar toggle:", !isNavbarVisible);
     setIsNavbarVisible((prev) => !prev);
   };
 
   const handleOutsidePress = () => {
     if (isNavbarVisible) {
-      console.log("Outside pressed, closing navbar");
       setIsNavbarVisible(false);
     }
   };
@@ -55,22 +60,17 @@ export default function VoucherAdmin() {
   const API_URL = `${BASE_URL}/listvouchers`;
 
   const fetchVouchers = async (status = "") => {
-    console.log("Fetching vouchers with status:", status);
     setLoading(true);
     try {
       let url = API_URL;
       if (status && status !== "all") {
         url += `?status=${status}`;
       }
-      console.log("Fetch URL:", url);
 
       const res = await fetch(url);
       const data = await res.json();
-
-      console.log("Fetched vouchers count:", data.length);
       setVouchers(data);
     } catch (error) {
-      console.error("Fetch vouchers error:", error);
       Alert.alert("Lỗi", "Không thể lấy dữ liệu voucher");
     } finally {
       setLoading(false);
@@ -78,7 +78,6 @@ export default function VoucherAdmin() {
   };
 
   useEffect(() => {
-    console.log("Filter changed:", filter);
     fetchVouchers(filter);
   }, [filter]);
 
@@ -89,9 +88,6 @@ export default function VoucherAdmin() {
     const isActive = now > startDate && now <= endDate && item.quantity > 0;
     const isExpired = now > endDate || item.quantity === 0;
 
-    console.log(
-      `Rendering voucher id=${item.id}, active=${isActive}, expired=${isExpired}`
-    );
 
     return (
       <View
@@ -143,7 +139,6 @@ export default function VoucherAdmin() {
                 filter === status && styles.filterButtonActive,
               ]}
               onPress={() => {
-                console.log("Filter button pressed:", status);
                 setFilter(status as "all" | "active" | "expired");
               }}
             >
@@ -179,7 +174,6 @@ export default function VoucherAdmin() {
         <TouchableOpacity
           style={styles.fab}
           onPress={() => {
-            console.log("Navigate to AddVoucher screen");
             navigation.navigate("Thêm Khuyến Mãi");
           }}
         >

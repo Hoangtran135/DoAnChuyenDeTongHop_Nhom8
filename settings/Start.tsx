@@ -13,14 +13,9 @@ const Start = () => {
   const navigation = useNavigation<NavigationProp>();
 
   useEffect(() => {
-    console.log("🚀 Start screen mounted");
-
     AsyncStorage.getItem("userId")
       .then((userId) => {
-        console.log("🔑 Lấy userId từ AsyncStorage:", userId);
-
         if (!userId) {
-          console.log("❌ Không có userId, chuyển đến Trang Đăng Nhập");
           navigation.reset({ index: 0, routes: [{ name: "Trang Chủ" }] });
           return;
         }
@@ -41,25 +36,19 @@ const Start = () => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
-            console.log("🌐 Gọi API lấy thông tin user:", response.status);
             return response.json();
           })
           .then((result) => {
-            console.log("📥 Kết quả từ API:", result);
-
             if (result && result.role !== undefined) {
               if (Number(result.role) === 1) {
-                console.log("👑 Là Admin, chuyển đến Trang Chủ Admin");
                 navigation.reset({
                   index: 0,
                   routes: [{ name: "Trang Chủ Admin" }],
                 });
               } else {
-                console.log("🙋‍♂️ Là User, chuyển đến Trang Chủ");
                 navigation.reset({ index: 0, routes: [{ name: "Trang Chủ" }] });
               }
             } else {
-              console.log("⚠️ Không xác định được vai trò người dùng");
               Alert.alert("Lỗi", "Không xác định được vai trò người dùng.");
               navigation.reset({
                 index: 0,
@@ -69,7 +58,6 @@ const Start = () => {
           })
           .catch((error) => {
             clearTimeout(timeoutId);
-            console.error("❌ Lỗi khi gọi API:", error);
             let errorMessage = "Không thể kết nối đến máy chủ.";
             
             if (error.name === "AbortError" || error.message === "Network request timed out") {
@@ -85,8 +73,7 @@ const Start = () => {
             });
           });
       })
-      .catch((error) => {
-        console.error("❌ Lỗi khi lấy userId từ AsyncStorage:", error);
+      .catch(() => {
         Alert.alert("Lỗi", "Không thể lấy thông tin người dùng.");
         navigation.reset({ index: 0, routes: [{ name: "Trang Chủ" }] });
       });

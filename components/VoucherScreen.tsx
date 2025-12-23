@@ -32,11 +32,13 @@ const formatDate = (dateStr: string) => {
 };
 
 export default function VoucherScreen() {
+  // State management
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
+  // Lấy danh sách voucher từ API
   useEffect(() => {
     axios
       .get(`${BASE_URL}/vouchers`)
@@ -46,13 +48,13 @@ export default function VoucherScreen() {
         }
       })
       .catch((err) => {
-        console.error("Error fetching vouchers:", err);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
 
+  // Render voucher item
   const renderVoucher = ({ item }: { item: Voucher }) => (
     <View style={styles.card}>
       <Text style={styles.code}>🎁 {item.discountcode}</Text>
@@ -156,7 +158,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopWidth: 1,
     borderTopColor: "#ddd",
-    // Nếu Navbar có chiều cao 60, bạn có thể thêm paddingVertical nếu cần
     height: 60,
   },
 });
