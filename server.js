@@ -19,6 +19,9 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // Static uploads
 app.use("/uploads", express.static(process.env.UPLOAD_DIR || "uploads"));
 
+// Static files for QR scanner test page
+app.use("/public", express.static("public"));
+
 // Rate limiting
 app.use("/api/", apiLimiter);
 app.use("/login", authLimiter);

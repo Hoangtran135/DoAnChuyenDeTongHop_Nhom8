@@ -65,10 +65,10 @@ export default function ChatBox({ route }: Props) {
       .catch(() => {});
   };
 
-  // Tự động load tin nhắn mới mỗi giây
+  // Tự động load tin nhắn mới mỗi 2 giây (tối ưu hơn 1 giây)
   useEffect(() => {
     loadMessages();
-    const interval = setInterval(loadMessages, 1000);
+    const interval = setInterval(loadMessages, 2000);
     return () => clearInterval(interval);
   }, [conversationId]);
 

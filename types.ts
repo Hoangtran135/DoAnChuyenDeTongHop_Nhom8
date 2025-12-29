@@ -34,5 +34,12 @@ export type RootStackParamList = {
   "Cập Nhật Banner": { bannerId: string };
   "Thêm Banner": undefined;
   "Yêu Thích": undefined;
-  "Chat Admin":undefined;
+  "Chat Admin": undefined;
+  "VNPay": {
+    amount: number;
+    orderId?: string;
+    userId: number;
+    onPaymentSuccess: () => void;
+    onPaymentCancel: () => void;
+  };
 };

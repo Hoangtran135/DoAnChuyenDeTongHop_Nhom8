@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from "react-native";
 import { BASE_URL } from "../ipconfig";
 
@@ -22,7 +22,10 @@ export default function AddOrderScreen({ route, navigation }: any) {
   const [user, setUser] = useState<{ name?: string; phone?: string; address?: string }>({});
   const [products, setProducts] = useState<any[]>([]);
 
-  const finalAmount = Math.round(totalAmount * (1 - discountAmount / 100));
+  const finalAmount = useMemo(
+    () => Math.round(totalAmount * (1 - discountAmount / 100)),
+    [totalAmount, discountAmount]
+  );
 
   // Lấy thông tin user và sản phẩm trong giỏ hàng
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
   }, []);
 
   // Chọn voucher giảm giá
-  const handleSelectVoucher = () => {
+  const handleSelectVoucher = useCallback(() => {
     navigation.navigate("Chọn Khuyến Mãi", {
       userId,
       onSelect: (voucher: { code: string; discountAmount: number }) => {
@@ -54,11 +57,23 @@ export default function AddOrderScreen({ route, navigation }: any) {
         setDiscountAmount(voucher.discountAmount);
       },
     });
-  };
+  }, [navigation, userId]);
+
+  // Xử lý thanh toán VNPay
+  const handleVNPayPayment = useCallback(() => {
+    navigation.navigate("VNPay", {
+      amount: finalAmount,
+      userId,
+      onPaymentSuccess: () => handlePlaceOrder("VNPay"),
+      onPaymentCancel: () => {},
+    });
+  }, [navigation, finalAmount, userId]);
 
   // Tạo đơn hàng mới
-  const handlePlaceOrder = async () => {
-    if (!selectedMethod) {
+  const handlePlaceOrder = useCallback(async (paymentType?: string) => {
+    const method = paymentType || selectedMethod;
+    
+    if (!method) {
       Alert.alert("Thông báo", "Vui lòng chọn phương thức thanh toán!");
       return;
     }
@@ -70,7 +85,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
-          paymentType: selectedMethod,
+          paymentType: method,
           totalAmount: finalAmount,
           voucherCode: selectedVoucherCode,
         }),
@@ -81,22 +96,35 @@ export default function AddOrderScreen({ route, navigation }: any) {
         Alert.alert("Thành công", "Đơn hàng đã được đặt!", [
           {
             text: "OK",
-            onPress: () => 
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Quản Lý Đơn Hàng" }],
-          })
+            onPress: () => navigation.reset({
+              index: 0,
+              routes: [{ name: "Quản Lý Đơn Hàng" }],
+            }),
           },
         ]);
       } else {
         Alert.alert("Lỗi", data.message || "Không thể đặt hàng");
       }
-    } catch (err) {
+    } catch {
       Alert.alert("Lỗi", "Không thể kết nối đến máy chủ");
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedMethod, userId, finalAmount, selectedVoucherCode, navigation]);
+
+  // Xử lý khi nhấn nút đặt hàng
+  const handleOrderButton = useCallback(() => {
+    if (!selectedMethod) {
+      Alert.alert("Thông báo", "Vui lòng chọn phương thức thanh toán!");
+      return;
+    }
+
+    if (selectedMethod === "VNPay") {
+      handleVNPayPayment();
+    } else {
+      handlePlaceOrder();
+    }
+  }, [selectedMethod, handleVNPayPayment]);
 
   return (
     <ScrollView style={styles.container}>
@@ -154,7 +182,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
       {/* Phương thức thanh toán */}
       <View style={styles.paymentSection}>
         <Text style={styles.sectionTitle}>Phương thức thanh toán :</Text>
-        {["COD", "NinePay", "CreditCard"].map((method) => (
+        {["COD", "VNPay"].map((method) => (
           <TouchableOpacity
             key={method}
             style={[
@@ -165,8 +193,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
           >
             <Text style={styles.optionText}>
               {method === "COD" ? "💰 Thanh toán khi nhận hàng" :
-               method === "NinePay" ? "💳 NinePay" :
-               "💳 Thẻ Tín dụng/Ghi nợ"}
+               "💳 VNPay"}
             </Text>
           </TouchableOpacity>
         ))}
@@ -184,11 +211,11 @@ export default function AddOrderScreen({ route, navigation }: any) {
       {/* Nút đặt hàng */}
       <TouchableOpacity
         style={[styles.confirmButton, loading && styles.disabledButton]}
-        onPress={handlePlaceOrder}
+        onPress={handleOrderButton}
         disabled={loading}
       >
         <Text style={styles.confirmText}>
-          {loading ? "Đang xử lý..." : "Đặt hàng"}
+          {loading ? "Đang xử lý..." : selectedMethod === "VNPay" ? "Thanh toán VNPay" : "Đặt hàng"}
         </Text>
       </TouchableOpacity>
     </ScrollView>

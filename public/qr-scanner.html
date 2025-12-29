@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VNPay QR Scanner Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #0052A5;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #0052A5;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #0052A5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #003d7a;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0052A5;
+        }
+        .info p {
+            margin: 5px 0;
+            color: #004085;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 VNPay QR Scanner Test</h1>
+        
+        <div class="info">
+            <p><strong>Hướng dẫn:</strong></p>
+            <p>1. Quét mã QR từ màn hình VNPay trên thiết bị khác</p>
+            <p>2. Dán mã QR vào ô bên dưới</p>
+            <p>3. Nhấn nút "Gửi quét QR"</p>
+            <p>4. Màn hình VNPay sẽ tự động phát hiện</p>
+        </div>
+
+        <div class="input-group">
+            <label for="qrCode">Mã QR (từ màn hình VNPay):</label>
+            <input 
+                type="text" 
+                id="qrCode" 
+                placeholder="Dán mã QR ở đây (ví dụ: VNPAY-123-1234567890-100000)"
+                autocomplete="off"
+            />
+        </div>
+
+        <button id="scanBtn" onclick="sendQRScan()">📱 Gửi quét QR</button>
+        <button onclick="testQRScan()" style="background: #28a745; margin-top: 10px;">🧪 Test với mã mẫu</button>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Lấy BASE_URL từ IP hiện tại (cần cập nhật theo IP server của bạn)
+        const SERVER_IP = "192.168.1.16"; // Thay đổi IP này theo IP server của bạn
+        const SERVER_PORT = 3000;
+        const BASE_URL = `http://${SERVER_IP}:${SERVER_PORT}`;
+
+        async function sendQRScan() {
+            const qrCodeInput = document.getElementById('qrCode');
+            const qrCode = qrCodeInput.value.trim();
+            const resultDiv = document.getElementById('result');
+            const scanBtn = document.getElementById('scanBtn');
+
+            if (!qrCode) {
+                showResult('Vui lòng nhập mã QR!', 'error');
+                return;
+            }
+
+            scanBtn.disabled = true;
+            scanBtn.textContent = 'Đang gửi...';
+
+            try {
+                const response = await fetch(`${BASE_URL}/qr-scan`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ qrCode: qrCode })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showResult(`✅ ${data.message}\nThời gian: ${new Date(data.scannedAt).toLocaleString('vi-VN')}`, 'success');
+                    qrCodeInput.value = '';
+                } else {
+                    showResult(`❌ ${data.message}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Lỗi kết nối: ${error.message}\n\nKiểm tra:\n- Server đang chạy chưa?\n- IP server có đúng không? (${SERVER_IP})`, 'error');
+            } finally {
+                scanBtn.disabled = false;
+                scanBtn.textContent = '📱 Gửi quét QR';
+            }
+        }
+
+        function testQRScan() {
+            // Tạo mã QR test
+            const testQRCode = `VNPAY-1-${Date.now()}-100000`;
+            document.getElementById('qrCode').value = testQRCode;
+            sendQRScan();
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+            resultDiv.style.display = 'block';
+            
+            // Tự động ẩn sau 5 giây
+            setTimeout(() => {
+                resultDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Cho phép paste từ clipboard
+        document.getElementById('qrCode').addEventListener('paste', (e) => {
+            setTimeout(() => {
+                const value = e.target.value.trim();
+                if (value) {
+                    sendQRScan();
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+

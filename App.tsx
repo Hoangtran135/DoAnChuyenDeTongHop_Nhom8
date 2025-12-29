@@ -46,6 +46,7 @@ import ChatBox from "./components/ChatBox";
 import AdminChatManagement from "./admin/AdminChatManagement";
 import ChatBoxAdmin from "./admin/ChatBoxAdmin";
 import Start from "./settings/Start";
+import VNPayScreen from "./components/VNPayScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -145,6 +146,14 @@ export default function App() {
         <Stack.Screen name="Chat Page" component={ChatPage} />
         <Stack.Screen name="Chat Admin" component={AdminChatManagement} />
         <Stack.Screen name="ChatBoxAdmin" component={ChatBoxAdmin} />
+        <Stack.Screen 
+          name="VNPay" 
+          component={VNPayScreen}
+          options={{ 
+            title: "Thanh toán VNPay",
+            headerShown: true 
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

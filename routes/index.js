@@ -12,6 +12,7 @@ router.use(require("./orders"));
 router.use(require("./cart"));
 router.use(require("./favorites"));
 router.use(require("./vouchers"));
+router.use(require("./qrpayment"));
 router.use(require("./feedback"));
 router.use(require("./search"));
 router.use(require("./reports"));
