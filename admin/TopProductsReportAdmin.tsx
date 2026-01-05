@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -16,15 +17,9 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * TOP PRODUCTS REPORT ADMIN - Báo cáo sản phẩm bán chạy
- * - Hiển thị biểu đồ sản phẩm bán chạy
- * - Danh sách top sản phẩm
- */
-
+// ========== CONSTANTS ==========
 const screenWidth = Dimensions.get("window").width;
 
-// Color palette for consistency
 const colors = {
   primary: "#000000", // Black for text, buttons
   accent: "#1976D2", // Blue for bars, loading
@@ -37,7 +32,6 @@ const colors = {
   white: "#FFFFFF", // Explicit white for text/buttons
 };
 
-// Common shadow for reusability
 const commonShadow = {
   shadowColor: "#000000",
   shadowOffset: { width: 0, height: 2 },
@@ -46,6 +40,7 @@ const commonShadow = {
   elevation: 4,
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   // Root container
   container: {
@@ -223,18 +218,22 @@ const styles = StyleSheet.create({
   },
 });
 
+// ========== TYPES ==========
 interface Product {
   id: number;
   name: string;
   total_sold: number;
 }
 
+// ========== COMPONENT ==========
 const TopProductsReportAdmin = () => {
+  // ========== STATE MANAGEMENT ==========
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isNavbarVisible, setNavbarVisible] = useState(false);
   const [viewMode, setViewMode] = useState<"list" | "chart">("list");
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setNavbarVisible((prev) => !prev);
   };
@@ -243,10 +242,12 @@ const TopProductsReportAdmin = () => {
     setNavbarVisible(false);
   };
 
+  // ========== HELPER FUNCTIONS ==========
   const shortenName = (name: string, maxLength: number = 8) => {
     return name.length > maxLength ? name.slice(0, maxLength) + "..." : name;
   };
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchTopProducts = async () => {
       try {
@@ -269,6 +270,7 @@ const TopProductsReportAdmin = () => {
     fetchTopProducts();
   }, []);
 
+  // ========== RENDER FUNCTIONS ==========
   const renderProductItem = ({ item }: { item: Product }) => (
     <View style={styles.productItem}>
       <Text style={styles.productName}>{item.name}</Text>
@@ -294,6 +296,7 @@ const TopProductsReportAdmin = () => {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>

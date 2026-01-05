@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -16,14 +17,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { ParamListBase } from "@react-navigation/native";
 
-/**
- * ORDER MANAGEMENT ADMIN - Quản lý đơn hàng
- * - Hiển thị danh sách đơn hàng
- * - Xác nhận đơn hàng
- * - Hủy đơn hàng
- * - Xem chi tiết đơn hàng
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -37,6 +31,7 @@ const colors = {
   selected: "#b0b0b0",
 };
 
+// ========== TYPES ==========
 type Order = {
   id: number;
   userName: string;
@@ -46,7 +41,9 @@ type Order = {
   total_price: string;
 };
 
+// ========== COMPONENT ==========
 const OrderManagementAdmin = () => {
+  // ========== STATE MANAGEMENT ==========
   const [orders, setOrders] = useState<Order[]>([]);
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
   const [filter, setFilter] = useState<
@@ -56,10 +53,12 @@ const OrderManagementAdmin = () => {
 
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchOrders();
   }, [filter]);
 
+  // ========== FUNCTIONS ==========
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -79,6 +78,7 @@ const OrderManagementAdmin = () => {
     (order) => filter === "All" || order.status === filter
   );
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prevState) => !prevState);
   };
@@ -123,6 +123,7 @@ const OrderManagementAdmin = () => {
     navigation.navigate("Chi Tiết Đơn Hàng Admin", { orderId });
   };
 
+  // ========== HELPER FUNCTIONS ==========
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Ordered":
@@ -136,6 +137,7 @@ const OrderManagementAdmin = () => {
     }
   };
 
+  // ========== RENDER FUNCTIONS ==========
   const renderItem = ({ item }: { item: Order }) => (
     <View style={styles.item}>
       <Text style={styles.userName}>Người dùng: {item.userName}</Text>
@@ -190,6 +192,7 @@ const OrderManagementAdmin = () => {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -255,6 +258,7 @@ const OrderManagementAdmin = () => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

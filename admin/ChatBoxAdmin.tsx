@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -13,12 +14,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../ipconfig';
 
-/**
- * CHAT BOX ADMIN - Chat với user
- * - Hiển thị tin nhắn trong cuộc trò chuyện
- * - Gửi tin nhắn đến user
- */
-
+// ========== TYPES ==========
 type Props = {
   route: any;
   navigation: any;
@@ -34,12 +30,15 @@ type Message = {
   name: string;
 };
 
+// ========== COMPONENT ==========
 export default function ChatBoxAdmin({ route }: Props) {
+  // ========== STATE MANAGEMENT ==========
   const { conversationId, adminId } = route.params;
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [userId, setUserId] = useState<number | null>(null);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -54,6 +53,7 @@ export default function ChatBoxAdmin({ route }: Props) {
     fetchUserId();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchMessages = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/api/messagesadmin/${conversationId}`);
@@ -62,6 +62,7 @@ export default function ChatBoxAdmin({ route }: Props) {
     }
   };
 
+  // ========== HANDLERS ==========
   const sendMessage = async () => {
     if (input.trim() === '') return;
 
@@ -85,6 +86,7 @@ export default function ChatBoxAdmin({ route }: Props) {
     return () => clearInterval(interval);
   }, []);
 
+  // ========== RENDER FUNCTIONS ==========
   const renderItem = ({ item }: { item: Message }) => (
     <View
       style={[
@@ -102,6 +104,7 @@ export default function ChatBoxAdmin({ route }: Props) {
     </View>
   );
 
+  // ========== RENDER ==========
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -135,6 +138,7 @@ export default function ChatBoxAdmin({ route }: Props) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -14,12 +15,7 @@ import {
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * UPDATE ADMIN SCREEN - Cập nhật thông tin admin
- * - Load thông tin admin hiện tại
- * - Cập nhật username, fullName, email, phone
- */
-
+// ========== TYPES ==========
 type AdminInfo = {
   id: string;
   username: string;
@@ -30,11 +26,14 @@ type AdminInfo = {
   password: string;
 };
 
+// ========== COMPONENT ==========
 export default function UpdateAdminScreen({ route, navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const { adminId } = route.params;
   const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchAdminInfo = async () => {
       try {
@@ -63,6 +62,7 @@ export default function UpdateAdminScreen({ route, navigation }: any) {
     fetchAdminInfo();
   }, [adminId, navigation]);
 
+  // ========== HANDLERS ==========
   const handleUpdate = () => {
     if (!adminInfo) return;
 
@@ -102,6 +102,7 @@ export default function UpdateAdminScreen({ route, navigation }: any) {
   if (!adminInfo)
     return <Text style={styles.errorText}>Không tìm thấy quản trị viên</Text>;
 
+  // ========== RENDER ==========
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -197,6 +198,7 @@ export default function UpdateAdminScreen({ route, navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

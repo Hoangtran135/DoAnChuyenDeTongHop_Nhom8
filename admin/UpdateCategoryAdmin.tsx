@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -13,12 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * UPDATE CATEGORY ADMIN - Cập nhật danh mục
- * - Load thông tin danh mục hiện tại
- * - Cập nhật tên và ảnh danh mục
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#1C2526", // màu đen than
   background: "#FFFFFF",
@@ -99,21 +95,25 @@ const styles = StyleSheet.create({
   },
 });
 
+// ========== TYPES ==========
 interface UpdateCategoryAdminProps {
   route: any;
   navigation: any;
 }
 
+// ========== COMPONENT ==========
 const UpdateCategoryAdmin = ({
   route,
   navigation,
 }: UpdateCategoryAdminProps) => {
+  // ========== STATE MANAGEMENT ==========
   const { categoryId } = route.params;
   const [name, setName] = useState("");
   const [oldImage, setOldImage] = useState("");
   const [newImage, setNewImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     axios
       .get(`${BASE_URL}/categories/${categoryId}`)
@@ -124,6 +124,7 @@ const UpdateCategoryAdmin = ({
       .catch(() => {});
   }, [categoryId]);
 
+  // ========== HANDLERS ==========
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -179,6 +180,7 @@ const UpdateCategoryAdmin = ({
     }
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TextInput

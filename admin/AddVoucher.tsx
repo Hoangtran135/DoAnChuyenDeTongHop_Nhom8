@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -15,13 +16,7 @@ import { BASE_URL } from "../ipconfig";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 
-/**
- * ADD VOUCHER - Thêm voucher mới
- * - Nhập mã giảm giá, % giảm giá, số lượng
- * - Chọn ngày bắt đầu và kết thúc
- * - Tạo voucher mới
- */
-
+// ========== TYPES ==========
 type AddVoucherScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Thêm Khuyến Mãi"
@@ -31,6 +26,7 @@ type Props = {
   navigation: AddVoucherScreenNavigationProp;
 };
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#1A1A1A",
   accent: "#4A4A4A",
@@ -42,6 +38,7 @@ const colors = {
   lightBorder: "#D1D1D1",
 };
 
+// ========== HELPER FUNCTIONS ==========
 const generateRandomCode = (length = 8) => {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let result = "";
@@ -51,7 +48,9 @@ const generateRandomCode = (length = 8) => {
   return result;
 };
 
+// ========== COMPONENT ==========
 const AddVoucher: React.FC<Props> = ({ navigation }) => {
+  // ========== STATE MANAGEMENT ==========
   const [discount, setDiscount] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [duration, setDuration] = useState<string>("");
@@ -59,10 +58,12 @@ const AddVoucher: React.FC<Props> = ({ navigation }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [voucherCode, setVoucherCode] = useState<string>("");
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     setVoucherCode(generateRandomCode());
   }, []);
 
+  // ========== HANDLERS ==========
   const onChangeDate = (event: any, selectedDate?: Date) => {
     if (Platform.OS === "android") {
       setShowDatePicker(false);
@@ -73,6 +74,7 @@ const AddVoucher: React.FC<Props> = ({ navigation }) => {
     setStartDate(selectedDate);
   };
 
+  // ========== HELPER FUNCTIONS ==========
   const formatDate = (date: Date | null) => {
     if (!date) return "Chọn ngày bắt đầu";
     const y = date.getFullYear();
@@ -144,6 +146,7 @@ const AddVoucher: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -292,6 +295,7 @@ const AddVoucher: React.FC<Props> = ({ navigation }) => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

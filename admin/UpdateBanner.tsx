@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -14,19 +15,16 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BASE_URL } from "../ipconfig";
 import { RootStackParamList } from "../types";
 
-/**
- * UPDATE BANNER - Cập nhật banner
- * - Load thông tin banner hiện tại
- * - Cập nhật ảnh banner
- */
-
+// ========== TYPES ==========
 type UpdateBannerNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Cập Nhật Banner"
 >;
 type UpdateBannerRouteProp = RouteProp<RootStackParamList, "Cập Nhật Banner">;
 
+// ========== COMPONENT ==========
 export default function UpdateBanner() {
+  // ========== STATE MANAGEMENT ==========
   const navigation = useNavigation<UpdateBannerNavigationProp>();
   const route = useRoute<UpdateBannerRouteProp>();
   const { bannerId } = route.params;
@@ -34,6 +32,7 @@ export default function UpdateBanner() {
   const [image, setImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  // ========== HANDLERS ==========
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -100,6 +99,7 @@ export default function UpdateBanner() {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
@@ -125,6 +125,7 @@ export default function UpdateBanner() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

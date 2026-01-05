@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -18,12 +19,7 @@ import { RootStackParamList } from "../types";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-/**
- * BANNER ADMIN - Quản lý banner
- * - Hiển thị danh sách banner
- * - Thêm, sửa, xóa banner
- */
-
+// ========== TYPES ==========
 type NavigationProp = StackNavigationProp<RootStackParamList, "Quản Lý Banner">;
 
 interface Banner {
@@ -32,6 +28,7 @@ interface Banner {
   created_at: string;
 }
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -41,7 +38,9 @@ const colors = {
   muted: "#777",
 };
 
+// ========== COMPONENT ==========
 export default function BannerAdmin() {
+  // ========== STATE MANAGEMENT ==========
   const navigation = useNavigation<NavigationProp>();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(false);
@@ -52,10 +51,12 @@ export default function BannerAdmin() {
 
   const screenWidth = Dimensions.get("window").width;
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchBanners();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchBanners = async () => {
     setLoading(true);
     setError(null);
@@ -76,6 +77,7 @@ export default function BannerAdmin() {
     }
   };
 
+  // ========== HANDLERS ==========
   const deleteBanner = (id: string) => {
     Alert.alert("Xác nhận", "Bạn có chắc muốn xóa banner này?", [
       { text: "Hủy", style: "cancel" },
@@ -107,6 +109,7 @@ export default function BannerAdmin() {
   const toggleNavbar = () => setIsNavbarVisible((prev) => !prev);
   const handleOutsidePress = () => setIsNavbarVisible(false);
 
+  // ========== RENDER FUNCTIONS ==========
   const renderBannerItem = ({ item }: { item: Banner }) => {
     const isSelected = selectedId === item.id;
 
@@ -166,6 +169,7 @@ export default function BannerAdmin() {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -221,6 +225,7 @@ export default function BannerAdmin() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

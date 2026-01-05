@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,12 +15,7 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-/**
- * CATEGORY MANAGEMENT ADMIN - Quản lý danh mục
- * - Hiển thị danh sách danh mục
- * - Thêm, sửa, xóa danh mục
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -29,21 +25,26 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 type Category = {
   id: number;
   name: string;
   product_count: number;
 };
 
+// ========== COMPONENT ==========
 const CategoryManagementAdmin = ({ navigation }: { navigation: any }) => {
+  // ========== STATE MANAGEMENT ==========
   const [categories, setCategories] = useState<Category[]>([]);
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchCategories();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchCategories = async () => {
     try {
       setLoading(true);
@@ -56,6 +57,7 @@ const CategoryManagementAdmin = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prevState) => !prevState);
   };
@@ -105,6 +107,7 @@ const CategoryManagementAdmin = ({ navigation }: { navigation: any }) => {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -157,6 +160,7 @@ const CategoryManagementAdmin = ({ navigation }: { navigation: any }) => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

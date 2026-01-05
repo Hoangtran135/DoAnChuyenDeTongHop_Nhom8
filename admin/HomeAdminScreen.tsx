@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -9,12 +10,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 
-/**
- * HOME ADMIN SCREEN - Trang chủ admin
- * - Hiển thị menu điều hướng
- * - Quản lý navbar
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -24,9 +20,12 @@ const colors = {
   muted: "#777",
 };
 
+// ========== COMPONENT ==========
 const HomeAdminScreen: React.FC = () => {
+  // ========== STATE MANAGEMENT ==========
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prevState) => !prevState);
   };
@@ -35,6 +34,7 @@ const HomeAdminScreen: React.FC = () => {
     setIsNavbarVisible(false);
   };
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -62,6 +62,7 @@ const HomeAdminScreen: React.FC = () => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

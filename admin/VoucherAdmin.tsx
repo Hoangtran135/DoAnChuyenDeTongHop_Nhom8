@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -15,13 +16,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../types";
 import { useNavigation } from "@react-navigation/native";
 
-/**
- * VOUCHER ADMIN - Quản lý voucher khuyến mãi
- * - Hiển thị danh sách voucher
- * - Lọc voucher theo trạng thái (all/active/expired)
- * - Thêm voucher mới
- */
-
+// ========== TYPES ==========
 type VoucherAdminNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "Quản Lý Khuyến Mãi"
@@ -37,9 +32,11 @@ type Voucher = {
   created_at: string;
 };
 
+// ========== COMPONENT ==========
 export default function VoucherAdmin() {
   const navigation = useNavigation<VoucherAdminNavigationProp>();
 
+  // ========== STATE MANAGEMENT ==========
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<"all" | "active" | "expired">("active");
@@ -47,6 +44,7 @@ export default function VoucherAdmin() {
   // Quản lý trạng thái navbar
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prev) => !prev);
   };
@@ -59,6 +57,7 @@ export default function VoucherAdmin() {
 
   const API_URL = `${BASE_URL}/listvouchers`;
 
+  // ========== FUNCTIONS ==========
   const fetchVouchers = async (status = "") => {
     setLoading(true);
     try {
@@ -77,10 +76,12 @@ export default function VoucherAdmin() {
     }
   };
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchVouchers(filter);
   }, [filter]);
 
+  // ========== RENDER FUNCTIONS ==========
   const renderVoucher = ({ item }: { item: Voucher }) => {
     const now = new Date();
     const startDate = new Date(item.start);
@@ -110,6 +111,7 @@ export default function VoucherAdmin() {
     );
   };
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -183,6 +185,7 @@ export default function VoucherAdmin() {
     </TouchableWithoutFeedback>
   );
 }
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50", // Xanh đậm chủ đạo
   accent: "#ff6f61", // Màu nổi bật (đỏ cam)
@@ -195,6 +198,7 @@ const colors = {
   expiredBackground: "#E5E5E5", // Màu nền voucher hết hạn
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

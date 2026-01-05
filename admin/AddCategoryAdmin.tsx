@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -12,13 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * ADD CATEGORY ADMIN - Thêm danh mục mới
- * - Nhập tên danh mục
- * - Chọn ảnh danh mục
- * - Tạo danh mục mới
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#000000",
   background: "#FFFFFF",
@@ -91,14 +86,18 @@ const styles = StyleSheet.create({
   },
 });
 
+// ========== TYPES ==========
 interface AddCategoryAdminProps {
   navigation: any;
 }
 
+// ========== COMPONENT ==========
 const AddCategoryAdmin = ({ navigation }: AddCategoryAdminProps) => {
+  // ========== STATE MANAGEMENT ==========
   const [name, setName] = useState("");
   const [image, setImage] = useState<any>(null);
 
+  // ========== HANDLERS ==========
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -145,6 +144,7 @@ const AddCategoryAdmin = ({ navigation }: AddCategoryAdminProps) => {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TextInput

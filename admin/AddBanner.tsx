@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -14,22 +15,20 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * ADD BANNER - Thêm banner mới
- * - Chọn ảnh banner
- * - Upload banner lên server
- */
-
+// ========== TYPES ==========
 type AddBannerScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Thêm Banner"
 >;
 
+// ========== COMPONENT ==========
 export default function AddBanner() {
+  // ========== STATE MANAGEMENT ==========
   const navigation = useNavigation<AddBannerScreenNavigationProp>();
   const [image, setImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
 
+  // ========== HANDLERS ==========
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -95,6 +94,7 @@ export default function AddBanner() {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
@@ -123,6 +123,7 @@ export default function AddBanner() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

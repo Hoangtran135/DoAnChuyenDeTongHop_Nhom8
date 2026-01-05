@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -11,12 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 
-/**
- * NAVBAR ADMIN - Menu điều hướng admin
- * - Hiển thị các menu quản lý
- * - Đăng xuất
- */
-
+// ========== TYPES ==========
 type NavigationProp = StackNavigationProp<
   RootStackParamList,
   keyof RootStackParamList
@@ -26,12 +22,15 @@ interface NavbarProps {
   toggleNavbar: () => void;
 }
 
+// ========== COMPONENT ==========
 export default function Navbar({ toggleNavbar }: NavbarProps) {
+  // ========== STATE MANAGEMENT ==========
   const navigation = useNavigation<NavigationProp>();
 
   const [showUserManagement, setShowUserManagement] = useState(false);
   const [showReportManagement, setShowReportManagement] = useState(false);
 
+  // ========== HANDLERS ==========
   const handleUserManagementPress = () => {
     setShowUserManagement(!showUserManagement);
     setShowReportManagement(false);
@@ -42,6 +41,7 @@ export default function Navbar({ toggleNavbar }: NavbarProps) {
     setShowUserManagement(false);
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.navbar}>
       <NavItem
@@ -118,6 +118,7 @@ export default function Navbar({ toggleNavbar }: NavbarProps) {
   );
 }
 
+// ========== SUB-COMPONENT ==========
 function NavItem({
   label,
   onPress,
@@ -127,8 +128,10 @@ function NavItem({
   onPress: () => void;
   isSubmenu?: boolean;
 }) {
+  // ========== STATE MANAGEMENT ==========
   const [scale] = useState(new Animated.Value(1));
 
+  // ========== HANDLERS ==========
   const handlePressIn = () => {
     Animated.timing(scale, {
       toValue: 0.95,
@@ -145,6 +148,7 @@ function NavItem({
     }).start();
   };
 
+  // ========== RENDER ==========
   return (
     <TouchableOpacity
       style={[styles.item, isSubmenu && styles.submenuItem]}
@@ -161,6 +165,7 @@ function NavItem({
   );
 }
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -169,6 +174,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   navbar: {
     flexDirection: "column",

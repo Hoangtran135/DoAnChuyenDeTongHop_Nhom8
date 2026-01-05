@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -14,12 +15,7 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-/**
- * USER MANAGEMENT - Quản lý người dùng
- * - Hiển thị danh sách user
- * - Xóa tài khoản user
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -29,6 +25,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 interface Admin {
   id: number;
   username: string;
@@ -36,15 +33,19 @@ interface Admin {
   role: number;
 }
 
+// ========== COMPONENT ==========
 export default function UserManagement({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [users, setUsers] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(false);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchUsers();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -57,6 +58,7 @@ export default function UserManagement({ navigation }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prevState) => !prevState);
   };
@@ -87,6 +89,7 @@ export default function UserManagement({ navigation }: any) {
     ]);
   };
 
+  // ========== RENDER FUNCTIONS ==========
   const renderUserItem = ({ item }: { item: Admin }) => (
     <View style={styles.item}>
       <Text style={styles.userId}>Tài khoản #{item.id}</Text>
@@ -117,6 +120,7 @@ export default function UserManagement({ navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -154,6 +158,7 @@ export default function UserManagement({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

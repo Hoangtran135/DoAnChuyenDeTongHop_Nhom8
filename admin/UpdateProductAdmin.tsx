@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -14,13 +15,9 @@ import { BASE_URL } from "../ipconfig";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 
-/**
- * UPDATE PRODUCT ADMIN - Cập nhật sản phẩm
- * - Load thông tin sản phẩm hiện tại
- * - Cập nhật tên, giá, mô tả, danh mục, ảnh
- */
-
+// ========== COMPONENT ==========
 const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any }) => {
+  // ========== STATE MANAGEMENT ==========
   const { productId } = route.params;
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -29,6 +26,7 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
   const [imageUri, setImageUri] = useState("");
   const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
 
+  // ========== EFFECTS ==========
   // Lấy thông tin sản phẩm hiện tại
   useEffect(() => {
     axios
@@ -56,6 +54,7 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
       });
   }, []);
 
+  // ========== HANDLERS ==========
   const handleChooseImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -105,6 +104,7 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
     }
   };
 
+  // ========== RENDER ==========
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>Tên sản phẩm</Text>
@@ -177,6 +177,7 @@ const UpdateProductAdmin = ({ route, navigation }: { route: any; navigation: any
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 28,

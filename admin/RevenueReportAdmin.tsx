@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -15,12 +16,7 @@ import { BASE_URL } from "../ipconfig";
 import { MaterialIcons } from "@expo/vector-icons";
 import Navbar from "./Navbar";
 
-/**
- * REVENUE REPORT ADMIN - Báo cáo doanh thu
- * - Hiển thị biểu đồ doanh thu theo tháng
- * - Tính tổng doanh thu
- */
-
+// ========== CONSTANTS ==========
 const screenWidth = Dimensions.get("window").width;
 
 const colors = {
@@ -33,17 +29,21 @@ const colors = {
   card: "#f5f5f5",
 };
 
+// ========== TYPES ==========
 interface RevenueItem {
   month: string;
   total_revenue: string;
   total_sold_products: number | string;
 }
 
+// ========== COMPONENT ==========
 const RevenueReportAdmin = () => {
+  // ========== STATE MANAGEMENT ==========
   const [revenueData, setRevenueData] = useState<RevenueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isNavbarVisible, setIsNavbarVisible] = useState(false);
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prev) => !prev);
   };
@@ -52,6 +52,7 @@ const RevenueReportAdmin = () => {
     setIsNavbarVisible(false);
   };
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
@@ -97,6 +98,7 @@ const RevenueReportAdmin = () => {
       : { month: monthStr, total_revenue: "0", total_sold_products: 0 };
   });
 
+  // ========== HELPER FUNCTIONS ==========
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -134,6 +136,7 @@ const RevenueReportAdmin = () => {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -213,6 +216,7 @@ const RevenueReportAdmin = () => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

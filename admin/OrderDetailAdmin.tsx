@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -10,12 +11,7 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * ORDER DETAIL ADMIN - Chi tiết đơn hàng
- * - Hiển thị thông tin đơn hàng
- * - Danh sách sản phẩm trong đơn hàng
- */
-
+// ========== TYPES ==========
 type OrderDetail = {
   product_name: string;
   quantity: number;
@@ -31,13 +27,16 @@ type OrderInfo = {
   items: OrderDetail[];
 };
 
+// ========== COMPONENT ==========
 const OrderDetailAdmin = () => {
+  // ========== STATE MANAGEMENT ==========
   const route = useRoute();
   const { orderId } = route.params as { orderId: number };
 
   const [order, setOrder] = useState<OrderInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchOrderDetail = async () => {
       try {
@@ -90,6 +89,7 @@ const OrderDetailAdmin = () => {
   }).format(Number(order.totalPrice));
 
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -125,6 +125,7 @@ const OrderDetailAdmin = () => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

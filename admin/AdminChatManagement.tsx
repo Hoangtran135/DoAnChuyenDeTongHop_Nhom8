@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -11,12 +12,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../ipconfig';
 
-/**
- * ADMIN CHAT MANAGEMENT - Quản lý chat
- * - Hiển thị danh sách cuộc trò chuyện
- * - Điều hướng đến chat box
- */
-
+// ========== TYPES ==========
 type Props = {
   navigation: any;
 };
@@ -28,11 +24,14 @@ type Conversation = {
   last_message?: string;
 };
 
+// ========== COMPONENT ==========
 export default function AdminChatManagement({ navigation }: Props) {
+  // ========== STATE MANAGEMENT ==========
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -55,6 +54,7 @@ export default function AdminChatManagement({ navigation }: Props) {
     }
   }, [userId]);
 
+  // ========== FUNCTIONS ==========
   const fetchAllConversations = async (currentUserId: number | null) => {
     setLoading(true);
 
@@ -72,6 +72,7 @@ export default function AdminChatManagement({ navigation }: Props) {
     }
   };
 
+  // ========== RENDER FUNCTIONS ==========
   const renderItem = ({ item }: { item: Conversation }) => (
     <TouchableOpacity
       style={styles.item}
@@ -96,6 +97,7 @@ export default function AdminChatManagement({ navigation }: Props) {
     </TouchableOpacity>
   );
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -124,6 +126,7 @@ export default function AdminChatManagement({ navigation }: Props) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

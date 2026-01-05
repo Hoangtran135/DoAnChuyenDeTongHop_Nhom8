@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../ipconfig";
 import {
@@ -14,12 +15,7 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-/**
- * ADMIN MANAGEMENT - Quản lý admin
- * - Hiển thị danh sách admin
- * - Thêm, sửa, xóa admin
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -29,6 +25,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 interface Admin {
   id: number;
   username: string;
@@ -36,15 +33,19 @@ interface Admin {
   role: number;
 }
 
+// ========== COMPONENT ==========
 export default function AdminManagement({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(false);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchAdmins();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchAdmins = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users?role=1&role1=1`);
@@ -56,6 +57,7 @@ export default function AdminManagement({ navigation }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   const toggleNavbar = () => {
     setIsNavbarVisible((prevState) => !prevState);
   };
@@ -96,6 +98,7 @@ export default function AdminManagement({ navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -147,6 +150,7 @@ export default function AdminManagement({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

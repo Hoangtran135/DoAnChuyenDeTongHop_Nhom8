@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -15,19 +16,15 @@ import { BASE_URL } from "../ipconfig";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
 
-/**
- * ADD PRODUCT ADMIN - Thêm sản phẩm mới
- * - Nhập thông tin sản phẩm
- * - Chọn danh mục và ảnh
- * - Upload sản phẩm lên server
- */
-
+// ========== TYPES ==========
 interface Category {
   id: number;
   name: string;
 }
 
+// ========== COMPONENT ==========
 export default function AddProductAdmin({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -38,6 +35,7 @@ export default function AddProductAdmin({ navigation }: any) {
   );
   const [uploading, setUploading] = useState(false);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -51,6 +49,7 @@ export default function AddProductAdmin({ navigation }: any) {
     fetchCategories();
   }, []);
 
+  // ========== HANDLERS ==========
   const pickImage = async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -110,6 +109,7 @@ export default function AddProductAdmin({ navigation }: any) {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.label}>Tên sản phẩm</Text>
@@ -184,6 +184,7 @@ export default function AddProductAdmin({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 24,

@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import React, { useState, useCallback } from "react";
 import { BASE_URL } from "../ipconfig";
@@ -17,13 +18,7 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Navbar from "./Navbar";
 
-/**
- * PRODUCT MANAGEMENT ADMIN - Quản lý sản phẩm
- * - Hiển thị danh sách sản phẩm
- * - Thêm, sửa, xóa sản phẩm
- * - Tìm kiếm sản phẩm
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -33,6 +28,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 interface Product {
   id: number;
   name: string;
@@ -44,7 +40,9 @@ interface Product {
   updated_at: string;
 }
 
+// ========== COMPONENT ==========
 export default function ProductManagementAdmin({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -53,12 +51,14 @@ export default function ProductManagementAdmin({ navigation }: any) {
   const [suggestionsVisible, setSuggestionsVisible] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
+  // ========== HELPER FUNCTIONS ==========
   // Hàm rút gọn mô tả sản phẩm
   const shortenDescription = (text: string, maxLength = 50) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + "...";
   };
 
+  // ========== FUNCTIONS ==========
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -78,6 +78,7 @@ export default function ProductManagementAdmin({ navigation }: any) {
     }, [])
   );
 
+  // ========== HANDLERS ==========
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query.trim() === "") {
@@ -150,6 +151,7 @@ export default function ProductManagementAdmin({ navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <TouchableWithoutFeedback onPress={handleOutsidePress}>
       <View style={styles.container}>
@@ -221,6 +223,7 @@ export default function ProductManagementAdmin({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

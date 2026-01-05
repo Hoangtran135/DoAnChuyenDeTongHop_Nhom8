@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -12,13 +13,9 @@ import {
 } from "react-native";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * ADD ADMIN SCREEN - Thêm admin mới
- * - Nhập thông tin admin
- * - Tạo tài khoản admin mới
- */
-
+// ========== COMPONENT ==========
 export default function AddAdminScreen({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +24,7 @@ export default function AddAdminScreen({ navigation }: any) {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ========== HANDLERS ==========
   const handleAddAdmin = async () => {
     if (!fullName || !username || !password || !email || !phone || !address) {
       Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
@@ -73,6 +71,7 @@ export default function AddAdminScreen({ navigation }: any) {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -139,6 +138,7 @@ export default function AddAdminScreen({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 28,
