@@ -1,9 +1,10 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 const { sendAIResponse } = require("../ai-assistant");
 
-// Lấy conversation (10 gần nhất)
+// ========== GET - Lấy conversations của user ==========
 router.get("/api/conversations/user/:userId", (req, res) => {
   const userId = req.params.userId;
 
@@ -21,6 +22,7 @@ router.get("/api/conversations/user/:userId", (req, res) => {
   });
 });
 
+// ========== GET - Lấy tất cả conversations ==========
 router.get("/api/conversations1", (req, res) => {
   const sql = "SELECT * FROM conversations";
   db.query(sql, (err, results) => {
@@ -32,7 +34,7 @@ router.get("/api/conversations1", (req, res) => {
   });
 });
 
-// Tạo conversation mới cho user (xóa cũ)
+// ========== POST - Tạo conversation mới ==========
 router.post("/api/conversations", (req, res) => {
   const { user_id } = req.body;
   if (!user_id) return res.status(400).json({ error: "Missing user_id" });
@@ -86,7 +88,7 @@ router.post("/api/conversations", (req, res) => {
   });
 });
 
-// Lấy tin nhắn theo conversation_id
+// ========== GET - Lấy tin nhắn theo conversation ==========
 router.get("/api/messages/:conversation_id", (req, res) => {
   const conversationId = +req.params.conversation_id;
   db.query(
@@ -105,7 +107,7 @@ router.get("/api/messages/:conversation_id", (req, res) => {
   );
 });
 
-// Gửi tin nhắn (user)
+// ========== POST - Gửi tin nhắn (user) ==========
 router.post("/api/messages", (req, res) => {
   const { conversation_id, user_id, message } = req.body;
   if (!conversation_id || !user_id || !message)
@@ -120,7 +122,6 @@ router.post("/api/messages", (req, res) => {
         return res.status(500).json({ error: "Server error" });
       }
 
-      // AI trả lời khi user không phải admin
       db.query(
         "SELECT role FROM users WHERE id = ?",
         [user_id],
@@ -136,7 +137,7 @@ router.post("/api/messages", (req, res) => {
   );
 });
 
-// Lấy tin nhắn admin
+// ========== GET - Lấy tin nhắn admin ==========
 router.get("/api/messagesadmin/:conversationId", (req, res) => {
   const conversationId = req.params.conversationId;
 
@@ -174,7 +175,7 @@ router.get("/api/messagesadmin/:conversationId", (req, res) => {
   });
 });
 
-// POST gửi tin nhắn admin
+// ========== POST - Gửi tin nhắn admin ==========
 router.post("/api/messagesadmin", (req, res) => {
   const { conversation_id, user_id, message, role } = req.body;
 
@@ -202,6 +203,5 @@ router.post("/api/messagesadmin", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-
