@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
@@ -5,7 +6,7 @@ const { upload, generateRandomFilename } = require("../config/multer");
 const path = require("path");
 const fs = require("fs");
 
-// API: Lấy danh sách danh mục kèm số lượng sản phẩm
+// ========== GET - Lấy danh sách danh mục ==========
 router.get("/categories", (req, res) => {
   const sql = `
     SELECT c.id, c.name, COUNT(p.id) AS product_count
@@ -20,7 +21,7 @@ router.get("/categories", (req, res) => {
   });
 });
 
-// API: Danh sách categories đang hoạt động
+// ========== GET - Lấy danh sách categories đang hoạt động ==========
 router.get("/listcategories", (req, res) => {
   const sql = `SELECT * FROM categories WHERE role = 1`;
 
@@ -30,7 +31,7 @@ router.get("/listcategories", (req, res) => {
   });
 });
 
-// API: Thêm danh mục kèm ảnh
+// ========== POST - Thêm danh mục ==========
 router.post("/categories", upload.single("image"), (req, res) => {
   const { name } = req.body;
   const file = req.file;
@@ -64,10 +65,12 @@ router.post("/categories", upload.single("image"), (req, res) => {
       }
 
       const created_at = new Date();
+      const role = 1;
+      
       const sql =
-        "INSERT INTO categories (name, images, created_at) VALUES (?, ?, ?)";
+        "INSERT INTO categories (name, images, role, created_at) VALUES (?, ?, ?, ?)";
 
-      db.query(sql, [name, imageFilename, created_at], (err) => {
+      db.query(sql, [name, imageFilename, role, created_at], (err) => {
         if (err) {
           console.error("Lỗi khi thêm danh mục:", err);
           return res.status(500).json({ message: "Lỗi khi thêm danh mục." });
@@ -78,7 +81,7 @@ router.post("/categories", upload.single("image"), (req, res) => {
   });
 });
 
-// API: Cập nhật danh mục kèm ảnh
+// ========== PUT - Cập nhật danh mục ==========
 router.put("/categories/:id", upload.single("image"), (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
@@ -139,7 +142,7 @@ router.put("/categories/:id", upload.single("image"), (req, res) => {
   }
 });
 
-// API: Ẩn danh mục (role = 0)
+// ========== DELETE - Ẩn danh mục ==========
 router.delete("/categories/:id", (req, res) => {
   const { id } = req.params;
   const sql = "UPDATE categories SET role = 0 WHERE id = ?";
@@ -160,6 +163,5 @@ router.delete("/categories/:id", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

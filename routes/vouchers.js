@@ -1,9 +1,10 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 const moment = require("moment-timezone");
 
-// GET all vouchers
+// ========== GET - Lấy danh sách vouchers ==========
 router.get("/vouchers", (req, res) => {
   const sql =
     "SELECT id, start, end, discountcode,discount, quantity, created_at FROM vouchers ORDER BY created_at DESC";
@@ -18,7 +19,7 @@ router.get("/vouchers", (req, res) => {
   });
 });
 
-// Tạo voucher (phiên bản đơn giản)
+// ========== POST - Tạo voucher (đơn giản) ==========
 router.post("/vouchers", (req, res) => {
   const { start, end, discountcode, quantity } = req.body;
   const sql =
@@ -29,7 +30,7 @@ router.post("/vouchers", (req, res) => {
   });
 });
 
-// Voucher khả dụng
+// ========== GET - Lấy vouchers khả dụng ==========
 router.get("/available-vouchers", (req, res) => {
   const today = new Date().toISOString().split("T")[0];
 
@@ -41,7 +42,7 @@ router.get("/available-vouchers", (req, res) => {
 
   db.query(query, [today, today], (err, results) => {
     if (err) {
-      console.error("❌ Lỗi truy vấn vouchers:", err);
+      console.error("Lỗi truy vấn vouchers:", err);
       return res.status(500).json({ message: "Lỗi máy chủ" });
     }
 
@@ -55,7 +56,7 @@ router.get("/available-vouchers", (req, res) => {
   });
 });
 
-// List vouchers theo trạng thái
+// ========== GET - Lấy vouchers theo trạng thái ==========
 router.get("/listvouchers", (req, res) => {
   const status = req.query.status || "all";
   const now = new Date();
@@ -90,7 +91,7 @@ router.get("/listvouchers", (req, res) => {
   });
 });
 
-// Tạo voucher (phiên bản đầy đủ)
+// ========== POST - Tạo voucher (đầy đủ) ==========
 router.post("/addvouchers", (req, res) => {
   const { discountcode, discount, start, end, quantity } = req.body;
 
@@ -134,6 +135,5 @@ router.post("/addvouchers", (req, res) => {
   );
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

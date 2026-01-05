@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// API: Lấy danh sách giỏ hàng của người dùng
+// ========== GET - Lấy danh sách giỏ hàng ==========
 router.get("/cart/:userId", (req, res) => {
   const userId = req.params.userId;
   const sql = `
@@ -18,7 +19,7 @@ router.get("/cart/:userId", (req, res) => {
   });
 });
 
-// API: Thêm sản phẩm vào giỏ hàng (có tự động tạo giỏ nếu chưa có)
+// ========== POST - Thêm sản phẩm vào giỏ hàng ==========
 router.post("/cart-items", (req, res) => {
   const { user_id, product_id, quantity } = req.body;
 
@@ -79,7 +80,7 @@ router.post("/cart-items", (req, res) => {
   });
 });
 
-// Cập nhật số lượng giỏ hàng
+// ========== PUT - Cập nhật số lượng giỏ hàng ==========
 router.put("/cart", (req, res) => {
   const { cart_id, product_id, quantity } = req.body;
 
@@ -103,7 +104,7 @@ router.put("/cart", (req, res) => {
   });
 });
 
-// Xóa sản phẩm khỏi giỏ (và xóa cart nếu rỗng)
+// ========== DELETE - Xóa sản phẩm khỏi giỏ hàng ==========
 router.delete("/cart1", (req, res) => {
   const { cart_id, product_id } = req.body;
 
@@ -155,6 +156,5 @@ router.delete("/cart1", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

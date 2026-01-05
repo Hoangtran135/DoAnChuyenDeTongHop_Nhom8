@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// PUT /users/:id (cập nhật Admin)
+// ========== PUT - Cập nhật Admin ==========
 router.put("/users/:id", async (req, res) => {
   const { id } = req.params;
   const { username, email, password } = req.body;
@@ -27,7 +28,7 @@ router.put("/users/:id", async (req, res) => {
   }
 });
 
-// API: Ẩn tài khoản người dùng bằng cách cập nhật role1 = 0
+// ========== DELETE - Ẩn tài khoản ==========
 router.delete("/deleteusers/:id", (req, res) => {
   const { id } = req.params;
   console.log(`Nhận yêu cầu ẩn tài khoản với ID: ${id}`);
@@ -63,7 +64,7 @@ router.delete("/deleteusers/:id", (req, res) => {
   });
 });
 
-// Cập nhật user (member)
+// ========== PUT - Cập nhật user ==========
 router.put("/updateuser/:id", (req, res) => {
   const userId = req.params.id;
   const { name, email, phone, address } = req.body;
@@ -105,7 +106,7 @@ router.put("/updateuser/:id", (req, res) => {
   });
 });
 
-// Cập nhật admin (full info)
+// ========== PUT - Cập nhật admin ==========
 router.put("/updateadmin/:id", (req, res) => {
   const adminId = req.params.id;
   const { name, email, phone, address, password, username } = req.body;
@@ -152,7 +153,7 @@ router.put("/updateadmin/:id", (req, res) => {
   });
 });
 
-// API: Lấy thông tin người dùng
+// ========== GET - Lấy thông tin người dùng ==========
 router.get("/user/:id", (req, res) => {
   const userId = req.params.id;
   const query =
@@ -177,7 +178,7 @@ router.get("/user/:id", (req, res) => {
   });
 });
 
-// API: Lấy danh sách người dùng thường (role = 0) và đang hiện (role1 = 1)
+// ========== GET - Lấy danh sách người dùng ==========
 router.get("/users", (req, res) => {
   const role = req.query.role;
   const role1 = req.query.role1;
@@ -198,7 +199,7 @@ router.get("/users", (req, res) => {
   });
 });
 
-// Check role user
+// ========== GET - Kiểm tra role user ==========
 router.get("/checkusers/:id", (req, res) => {
   const userId = req.params.id;
   console.log("Nhận request check role cho userId:", userId);
@@ -218,6 +219,5 @@ router.get("/checkusers/:id", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

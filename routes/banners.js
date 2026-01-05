@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
@@ -6,7 +7,7 @@ const path = require("path");
 const fs = require("fs");
 const uploadDir = process.env.UPLOAD_DIR || "uploads";
 
-// Lấy danh sách banners
+// ========== GET - Lấy danh sách banners ==========
 router.get("/banners", (req, res) => {
   const sql =
     "SELECT id, images AS images, created_at FROM banner ORDER BY created_at DESC";
@@ -21,7 +22,7 @@ router.get("/banners", (req, res) => {
   });
 });
 
-// Lấy banner (alias cho /banners)
+// ========== GET - Lấy banner (alias) ==========
 router.get("/laybanners", (req, res) => {
   const sql =
     "SELECT id, images, created_at FROM banner ORDER BY created_at DESC";
@@ -35,11 +36,10 @@ router.get("/laybanners", (req, res) => {
   });
 });
 
-// Xóa banner
+// ========== DELETE - Xóa banner ==========
 router.delete("/banners/:id", (req, res) => {
   const bannerId = req.params.id;
 
-  // Kiểm tra banner tồn tại
   db.query("SELECT * FROM banner WHERE id = ?", [bannerId], (err, results) => {
     if (err) {
       console.error(err);
@@ -52,7 +52,6 @@ router.delete("/banners/:id", (req, res) => {
       return res.status(404).json({ message: "Banner không tồn tại" });
     }
 
-    // Xóa banner
     db.query("DELETE FROM banner WHERE id = ?", [bannerId], (err2) => {
       if (err2) {
         console.error(err2);
@@ -64,7 +63,7 @@ router.delete("/banners/:id", (req, res) => {
   });
 });
 
-// Thêm banner
+// ========== POST - Thêm banner ==========
 router.post("/banners", upload.single("image"), (req, res) => {
   const file = req.file;
 
@@ -105,7 +104,7 @@ router.post("/banners", upload.single("image"), (req, res) => {
   });
 });
 
-// Update banner theo id
+// ========== PUT - Cập nhật banner ==========
 router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
   const bannerId = req.params.id;
   const file = req.file;
@@ -116,7 +115,6 @@ router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
       .json({ message: "Bạn cần gửi file ảnh để update banner." });
   }
 
-  // Bước 1: Lấy thông tin banner cũ trong DB để biết file ảnh cũ (để xóa)
   const getBannerSql = "SELECT images FROM banner WHERE id = ?";
   db.query(getBannerSql, [bannerId], (err, results) => {
     if (err) {
@@ -129,7 +127,6 @@ router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
 
     const oldFilename = results[0].images;
 
-    // Bước 2: Đổi tên file upload mới
     const ext = path.extname(file.originalname);
     const newFilename = generateRandomFilename() + ext;
 
@@ -142,7 +139,6 @@ router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
         return res.status(500).json({ message: "Lỗi khi đổi tên file." });
       }
 
-      // Bước 3: Cập nhật database với tên file mới
       const updatedAt = new Date().toISOString().slice(0, 19).replace("T", " ");
       const updateSql =
         "UPDATE banner SET images = ?, created_at = ? WHERE id = ?";
@@ -158,13 +154,11 @@ router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
               .json({ message: "Lỗi khi cập nhật banner." });
           }
 
-          // Bước 4: Xóa file ảnh cũ nếu có
           if (oldFilename) {
             const oldFilePath = path.join(__dirname, "..", uploadDir, oldFilename);
             fs.unlink(oldFilePath, (err) => {
               if (err) {
                 console.warn("Không thể xóa file ảnh cũ:", oldFilePath);
-                // Không trả lỗi, vì update vẫn thành công
               }
             });
           }
@@ -178,5 +172,5 @@ router.put("/updatebanners/:id", upload.single("image"), (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-

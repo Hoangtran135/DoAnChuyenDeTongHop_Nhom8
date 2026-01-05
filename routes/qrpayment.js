@@ -1,11 +1,11 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 
-// In-memory store để lưu trạng thái quét QR
-// Trong production, nên dùng Redis hoặc database
+// ========== QR SCAN STATUS STORE ==========
 const qrScanStatus = new Map();
 
-// Helper function để lưu trạng thái quét QR
+// ========== HELPER FUNCTIONS ==========
 const saveQRScanStatus = (qrCode) => {
   const status = {
     scanned: true,
@@ -13,13 +13,12 @@ const saveQRScanStatus = (qrCode) => {
   };
   qrScanStatus.set(qrCode, status);
   
-  // Tự động xóa sau 5 phút để tránh memory leak
   setTimeout(() => qrScanStatus.delete(qrCode), 5 * 60 * 1000);
   
   return status;
 };
 
-// API: Thiết bị khác gọi khi quét QR thành công
+// ========== POST - Quét QR ==========
 router.post("/qr-scan", (req, res) => {
   const { qrCode } = req.body;
 
@@ -36,7 +35,7 @@ router.post("/qr-scan", (req, res) => {
   });
 });
 
-// API: Kiểm tra trạng thái quét QR
+// ========== GET - Kiểm tra trạng thái QR ==========
 router.get("/qr-status/:qrCode", (req, res) => {
   const { qrCode } = req.params;
   const decodedQRCode = decodeURIComponent(qrCode);
@@ -51,7 +50,6 @@ router.get("/qr-status/:qrCode", (req, res) => {
     });
   }
 
-
   res.json({
     success: true,
     scanned: status.scanned,
@@ -59,7 +57,7 @@ router.get("/qr-status/:qrCode", (req, res) => {
   });
 });
 
-// API: Tạo mã QR mới (tùy chọn - để reset)
+// ========== POST - Tạo mã QR ==========
 router.post("/qr-create", (req, res) => {
   const { qrCode } = req.body;
 
@@ -67,7 +65,6 @@ router.post("/qr-create", (req, res) => {
     return res.status(400).json({ success: false, message: "Thiếu mã QR" });
   }
 
-  // Khởi tạo trạng thái chưa quét
   qrScanStatus.set(qrCode, {
     scanned: false,
     createdAt: new Date().toISOString(),
@@ -80,7 +77,7 @@ router.post("/qr-create", (req, res) => {
   });
 });
 
-// API: Redirect endpoint - khi quét QR code sẽ tự động gọi API này
+// ========== GET - Redirect khi quét QR ==========
 router.get("/qr-scan-redirect/:qrCode", async (req, res) => {
   const { qrCode } = req.params;
   const decodedQRCode = decodeURIComponent(qrCode);
@@ -99,7 +96,6 @@ router.get("/qr-scan-redirect/:qrCode", async (req, res) => {
 
   const status = saveQRScanStatus(decodedQRCode);
 
-  // Trả về trang HTML thông báo thành công
   res.send(`
     <!DOCTYPE html>
     <html lang="vi">
@@ -177,5 +173,5 @@ router.get("/qr-scan-redirect/:qrCode", async (req, res) => {
   `);
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-

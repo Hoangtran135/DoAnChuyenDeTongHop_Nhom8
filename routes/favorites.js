@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// Lấy yêu thích
+// ========== GET - Lấy danh sách yêu thích ==========
 router.get("/favourite/:userId", (req, res) => {
   const { userId } = req.params;
 
@@ -14,14 +15,14 @@ router.get("/favourite/:userId", (req, res) => {
   `;
   db.query(sql, [userId], (err, result) => {
     if (err) {
-      console.error("❌ Lỗi truy vấn favorites:", err);
+      console.error("Lỗi truy vấn favorites:", err);
       return res.status(500).json({ error: "Lỗi truy vấn" });
     }
     res.json(result);
   });
 });
 
-// Alias để tương thích frontend cũ: /favorites/user/:userId
+// ========== GET - Lấy danh sách yêu thích (alias) ==========
 router.get("/favorites/user/:userId", (req, res) => {
   const { userId } = req.params;
 
@@ -33,14 +34,14 @@ router.get("/favorites/user/:userId", (req, res) => {
   `;
   db.query(sql, [userId], (err, result) => {
     if (err) {
-      console.error("❌ Lỗi truy vấn favorites:", err);
+      console.error("Lỗi truy vấn favorites:", err);
       return res.status(500).json({ error: "Lỗi truy vấn" });
     }
     res.json(result);
   });
 });
 
-// Thêm yêu thích
+// ========== POST - Thêm yêu thích ==========
 router.post("/favorites", (req, res) => {
   const { user_id, product_id } = req.body;
 
@@ -52,7 +53,7 @@ router.post("/favorites", (req, res) => {
     "INSERT INTO favorites (userid, productid, created_at) VALUES (?, ?, NOW())";
   db.query(sql, [user_id, product_id], (err, result) => {
     if (err) {
-      console.error("❌ Lỗi khi thêm vào favorites:", err);
+      console.error("Lỗi khi thêm vào favorites:", err);
       if (err.code === "ER_DUP_ENTRY") {
         return res.status(409).json({ message: "Đã tồn tại trong yêu thích" });
       }
@@ -63,7 +64,7 @@ router.post("/favorites", (req, res) => {
   });
 });
 
-// Xóa yêu thích
+// ========== DELETE - Xóa yêu thích ==========
 router.delete("/favorites", (req, res) => {
   const { user_id, product_id } = req.body;
 
@@ -74,7 +75,7 @@ router.delete("/favorites", (req, res) => {
   const sql = "DELETE FROM favorites WHERE userid = ? AND productid = ?";
   db.query(sql, [user_id, product_id], (err, result) => {
     if (err) {
-      console.error("❌ Lỗi khi xóa yêu thích:", err);
+      console.error("Lỗi khi xóa yêu thích:", err);
       return res.status(500).json({ error: "Lỗi khi xóa khỏi yêu thích" });
     }
 
@@ -86,6 +87,5 @@ router.delete("/favorites", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

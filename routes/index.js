@@ -1,7 +1,8 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 
-// Mount all route modules (keeps server.js minimal)
+// ========== ROUTES ==========
 router.use(require("./upload"));
 router.use(require("./banners"));
 router.use(require("./products"));
@@ -18,6 +19,5 @@ router.use(require("./search"));
 router.use(require("./reports"));
 router.use(require("./chat"));
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

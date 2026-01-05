@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// API: Lấy danh sách đơn hàng
+// ========== GET - Lấy danh sách đơn hàng ==========
 router.get("/orders", (req, res) => {
   const status = req.query.status || "";
 
@@ -31,7 +32,7 @@ router.get("/orders", (req, res) => {
   });
 });
 
-// Hủy đơn hàng
+// ========== PUT - Hủy đơn hàng ==========
 router.put("/orders/:id/cancel", (req, res) => {
   const orderId = req.params.id;
 
@@ -52,7 +53,7 @@ router.put("/orders/:id/cancel", (req, res) => {
   });
 });
 
-// Cập nhật trạng thái đơn hàng
+// ========== PUT - Cập nhật trạng thái đơn hàng ==========
 router.put("/orders/:id/status", (req, res) => {
   const orderId = req.params.id;
 
@@ -75,7 +76,7 @@ router.put("/orders/:id/status", (req, res) => {
   });
 });
 
-// Lấy chi tiết đơn hàng (order + items)
+// ========== GET - Lấy chi tiết đơn hàng ==========
 router.get("/orders/:orderId/detail", (req, res) => {
   const { orderId } = req.params;
 
@@ -129,7 +130,7 @@ router.get("/orders/:orderId/detail", (req, res) => {
   );
 });
 
-// API: Lấy danh sách đơn hàng của người dùng
+// ========== GET - Lấy danh sách đơn hàng của người dùng ==========
 router.get("/orders/user/:userId", (req, res) => {
   const userId = req.params.userId;
   const sql = `
@@ -146,7 +147,7 @@ router.get("/orders/user/:userId", (req, res) => {
   });
 });
 
-// API: Lấy chi tiết đơn hàng (sản phẩm trong đơn hàng)
+// ========== GET - Lấy chi tiết đơn hàng theo ID ==========
 router.get("/order/:orderId", (req, res) => {
   const orderId = req.params.orderId;
 
@@ -181,7 +182,7 @@ router.get("/order/:orderId", (req, res) => {
   });
 });
 
-// DELETE /order-detail/:id
+// ========== DELETE - Xóa chi tiết đơn hàng ==========
 router.delete("/order-detail/:id", (req, res) => {
   const { id } = req.params;
 
@@ -192,7 +193,7 @@ router.delete("/order-detail/:id", (req, res) => {
   const getOrderIdQuery = "SELECT order_id FROM order_details WHERE id = ?";
   db.execute(getOrderIdQuery, [id], (err, results) => {
     if (err) {
-      console.error("❌ Lỗi khi truy vấn order_id:", err);
+      console.error("Lỗi khi truy vấn order_id:", err);
       return res.status(500).json({ message: "Lỗi truy vấn order_id" });
     }
 
@@ -207,7 +208,7 @@ router.delete("/order-detail/:id", (req, res) => {
     const deleteQuery = "DELETE FROM order_details WHERE id = ?";
     db.execute(deleteQuery, [id], (err, result) => {
       if (err) {
-        console.error("❌ Lỗi khi xóa sản phẩm:", err);
+        console.error("Lỗi khi xóa sản phẩm:", err);
         return res.status(500).json({ message: "Lỗi khi xóa sản phẩm" });
       }
 
@@ -218,7 +219,7 @@ router.delete("/order-detail/:id", (req, res) => {
       `;
       db.execute(totalQuery, [orderId], (err, rows) => {
         if (err) {
-          console.error("❌ Lỗi khi tính tổng:", err);
+          console.error("Lỗi khi tính tổng:", err);
           return res.status(500).json({ message: "Lỗi khi tính tổng tiền" });
         }
 
@@ -228,7 +229,7 @@ router.delete("/order-detail/:id", (req, res) => {
           const deleteOrderQuery = "DELETE FROM orders WHERE id = ?";
           db.execute(deleteOrderQuery, [orderId], (err) => {
             if (err) {
-              console.error("❌ Lỗi khi xóa đơn hàng:", err);
+              console.error("Lỗi khi xóa đơn hàng:", err);
               return res.status(500).json({ message: "Lỗi khi xóa đơn hàng" });
             }
 
@@ -241,7 +242,7 @@ router.delete("/order-detail/:id", (req, res) => {
             "UPDATE orders SET total_amount = ? WHERE id = ?";
           db.execute(updateOrderQuery, [newTotal, orderId], (err) => {
             if (err) {
-              console.error("❌ Lỗi khi cập nhật đơn hàng:", err);
+              console.error("Lỗi khi cập nhật đơn hàng:", err);
               return res
                 .status(500)
                 .json({ message: "Lỗi khi cập nhật đơn hàng" });
@@ -257,7 +258,7 @@ router.delete("/order-detail/:id", (req, res) => {
   });
 });
 
-// API: Đặt hàng
+// ========== POST - Đặt hàng ==========
 router.post("/place-order", (req, res) => {
   const { userId, paymentType, totalAmount, voucherCode } = req.body;
 
@@ -310,7 +311,6 @@ router.post("/place-order", (req, res) => {
       VALUES (?, ?, ?, ?)
     `;
 
-    // NOTE: Với connection pool, KHÔNG dùng LAST_INSERT_ID() qua connection khác.
     db.query(
       createOrderQuery,
       [userId, "Ordered", paymentType, totalAmount],
@@ -390,7 +390,7 @@ router.post("/place-order", (req, res) => {
   });
 });
 
-// API: order-info (thông tin user + giỏ hàng)
+// ========== GET - Lấy thông tin đơn hàng ==========
 router.get("/order-info", (req, res) => {
   const { userId } = req.query;
 
@@ -427,6 +427,5 @@ router.get("/order-info", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

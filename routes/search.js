@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// Lưu tìm kiếm
+// ========== POST - Lưu tìm kiếm ==========
 router.post("/saveSearch", (req, res) => {
   const { userId, searchContent } = req.body;
 
@@ -23,7 +24,7 @@ router.post("/saveSearch", (req, res) => {
   });
 });
 
-// Top searches
+// ========== GET - Lấy top searches ==========
 router.get("/topSearches", (req, res) => {
   const userId = req.query.userId;
   const limit = parseInt(req.query.limit) || 5;
@@ -44,6 +45,5 @@ router.get("/topSearches", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

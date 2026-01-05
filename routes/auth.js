@@ -1,8 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
-// API: Đăng ký người dùng
+// ========== POST - Đăng ký người dùng ==========
 router.post("/register", (req, res) => {
   const { fullName, username, email, password, phone, address } = req.body;
 
@@ -62,7 +63,7 @@ router.post("/register", (req, res) => {
   });
 });
 
-// API: Đăng ký admin
+// ========== POST - Đăng ký admin ==========
 router.post("/registeradmin", (req, res) => {
   const { fullName, username, email, password, phone, address } = req.body;
 
@@ -122,7 +123,7 @@ router.post("/registeradmin", (req, res) => {
   });
 });
 
-// API: Đăng nhập người dùng
+// ========== POST - Đăng nhập ==========
 router.post("/login", (req, res) => {
   const { username, password, role } = req.body;
 
@@ -163,6 +164,5 @@ router.post("/login", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

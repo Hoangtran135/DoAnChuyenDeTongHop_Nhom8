@@ -1,7 +1,9 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 
+// ========== GET - Lấy top sản phẩm bán chạy ==========
 router.get("/top-products/:limit", (req, res) => {
   const limit = parseInt(req.params.limit);
 
@@ -27,6 +29,7 @@ router.get("/top-products/:limit", (req, res) => {
   });
 });
 
+// ========== GET - Lấy báo cáo doanh thu ==========
 router.get("/revenue-report", (req, res) => {
   const query = `
     SELECT 
@@ -57,6 +60,5 @@ router.get("/revenue-report", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

@@ -1,9 +1,10 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 const { upload } = require("../config/multer");
 
-// API: Thêm sản phẩm kèm ảnh
+// ========== POST - Thêm sản phẩm ==========
 router.post("/products", upload.single("image"), (req, res) => {
   const { name, description, price, category_id } = req.body;
   const file = req.file;
@@ -14,18 +15,19 @@ router.post("/products", upload.single("image"), (req, res) => {
       .json({ message: "Tên, giá, danh mục và ảnh là bắt buộc!" });
   }
 
-  const imageFilename = file.filename; // Chỉ lưu "123456.jpg"
+  const imageFilename = file.filename;
   const created_at = new Date();
   const updated_at = new Date();
+  const role = 1;
 
   const sql = `
-    INSERT INTO products (name, description, price, images, category_id, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO products (name, description, price, images, category_id, role, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   db.query(
     sql,
-    [name, description, price, imageFilename, category_id, created_at, updated_at],
+    [name, description, price, imageFilename, category_id, role, created_at, updated_at],
     (err, result) => {
       if (err) {
         console.error(err);
@@ -39,7 +41,7 @@ router.post("/products", upload.single("image"), (req, res) => {
   );
 });
 
-// API: Cập nhật sản phẩm kèm ảnh
+// ========== PUT - Cập nhật sản phẩm ==========
 router.put("/products/:id", upload.single("image"), (req, res) => {
   const { id } = req.params;
   const { name, description, price, category_id } = req.body;
@@ -49,7 +51,7 @@ router.put("/products/:id", upload.single("image"), (req, res) => {
     return res.status(400).json({ message: "Tên, giá, danh mục là bắt buộc!" });
   }
 
-  let imageFilename = req.body.image; // Giữ lại tên file cũ nếu không cập nhật ảnh mới
+  let imageFilename = req.body.image;
   if (file) imageFilename = file.filename;
 
   const updated_at = new Date();
@@ -75,7 +77,7 @@ router.put("/products/:id", upload.single("image"), (req, res) => {
   );
 });
 
-// API: Ẩn sản phẩm (role = 0)
+// ========== DELETE - Ẩn sản phẩm ==========
 router.delete("/products/:id", (req, res) => {
   const { id } = req.params;
   const sql = "UPDATE products SET role = 0 WHERE id = ?";
@@ -98,7 +100,7 @@ router.delete("/products/:id", (req, res) => {
   });
 });
 
-// API: Lấy danh sách sản phẩm
+// ========== GET - Lấy danh sách sản phẩm ==========
 router.get("/products", (req, res) => {
   const categoryId = req.query.category_id;
   let sql = `
@@ -122,7 +124,7 @@ router.get("/products", (req, res) => {
   }
 });
 
-// API: Lấy chi tiết sản phẩm theo ID
+// ========== GET - Lấy chi tiết sản phẩm ==========
 router.get("/products/:id", (req, res) => {
   const productId = req.params.id;
   const sqlQuery = "SELECT * FROM products WHERE id = ?";
@@ -135,7 +137,7 @@ router.get("/products/:id", (req, res) => {
   });
 });
 
-// API: Lấy sản phẩm theo danh mục
+// ========== GET - Lấy sản phẩm theo danh mục ==========
 router.get("/products-by-category/:categoryId", (req, res) => {
   const categoryId = req.params.categoryId;
   const sql = `
@@ -150,6 +152,5 @@ router.get("/products-by-category/:categoryId", (req, res) => {
   });
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-

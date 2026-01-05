@@ -1,9 +1,10 @@
+// ========== IMPORTS ==========
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
 const { upload } = require("../config/multer");
 
-// Tạo feedback (kèm ảnh nếu có)
+// ========== POST - Tạo feedback ==========
 router.post("/feedbacks", upload.single("image"), (req, res) => {
   const { orderId, userId, star, feedback: feedbackText } = req.body;
   const file = req.file;
@@ -55,7 +56,7 @@ router.post("/feedbacks", upload.single("image"), (req, res) => {
   });
 });
 
-// Lấy feedback theo product
+// ========== GET - Lấy feedback theo sản phẩm ==========
 router.get("/feedbacks/product/:productId", (req, res) => {
   const productId = req.params.productId;
 
@@ -72,6 +73,5 @@ router.get("/feedbacks/product/:productId", (req, res) => {
   );
 });
 
+// ========== EXPORT ==========
 module.exports = router;
-
-
