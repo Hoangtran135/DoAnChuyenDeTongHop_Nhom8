@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import { RootStackParamList } from "../types";
 import { BASE_URL } from "../ipconfig";
@@ -11,15 +12,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack"; // Import StackNavigationProp để thêm kiểu
+import { StackNavigationProp } from "@react-navigation/stack";
 import Navbar from "./Navbar";
 
-// Định nghĩa kiểu navigation cho màn hình này
+// ========== TYPES ==========
 type OrderDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Chi Tiết Đơn Hàng"
 >;
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#2c3e50",
   accent: "#ff6f61",
@@ -29,8 +31,11 @@ const colors = {
   danger: "#e74c3c",
 };
 
+// ========== COMPONENT ==========
 export default function OrderDetailScreen({ route }: any) {
   const { orderId } = route.params;
+  
+  // ========== STATE MANAGEMENT ==========
   const [details, setDetails] = useState<any[]>([]);
   const [orderInfo, setOrderInfo] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,11 +43,13 @@ export default function OrderDetailScreen({ route }: any) {
 
   const navigation = useNavigation<OrderDetailScreenNavigationProp>();
 
+  // ========== EFFECTS ==========
   // Load chi tiết đơn hàng khi component mount
   useEffect(() => {
     fetchOrderDetail();
   }, [orderId]);
 
+  // ========== FUNCTIONS ==========
   // Lấy chi tiết đơn hàng từ API
   const fetchOrderDetail = async () => {
     setLoading(true);
@@ -68,6 +75,7 @@ export default function OrderDetailScreen({ route }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   // Xóa sản phẩm khỏi đơn hàng
   const handleDeleteItem = async (orderDetailId: number) => {
     Alert.alert(
@@ -140,6 +148,7 @@ export default function OrderDetailScreen({ route }: any) {
     </View>
   );
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <Text style={styles.title}> #{orderId}</Text>
@@ -180,6 +189,7 @@ export default function OrderDetailScreen({ route }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

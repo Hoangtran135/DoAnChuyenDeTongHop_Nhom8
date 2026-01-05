@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -8,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+// ========== COMPONENT ==========
 export default function Navbar({ navigation }: any) {
   return (
     <View style={styles.navbar}>
@@ -35,9 +37,12 @@ export default function Navbar({ navigation }: any) {
   );
 }
 
+// ========== SUB-COMPONENT ==========
 function NavItem({ icon, label, onPress }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [scale] = useState(new Animated.Value(1));
 
+  // ========== HANDLERS ==========
   const handlePressIn = () => {
     Animated.spring(scale, {
       toValue: 0.9,
@@ -76,6 +81,7 @@ function NavItem({ icon, label, onPress }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   navbar: {
     flexDirection: "row",

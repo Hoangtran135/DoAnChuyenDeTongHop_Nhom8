@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -16,8 +17,9 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import AddToCartScreen from "./AddToCartScreen";
 
+// ========== COMPONENT ==========
 export default function HomeScreen({ route, navigation }: any) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
@@ -39,6 +41,7 @@ export default function HomeScreen({ route, navigation }: any) {
   const [banners, setBanners] = useState<any[]>([]);
   const [showBannerAndCategories, setShowBannerAndCategories] = useState(true);
 
+  // ========== EFFECTS ==========
   // Banner auto slide (mỗi 3 giây)
   useEffect(() => {
     if (banners.length <= 1) return; 
@@ -126,6 +129,7 @@ export default function HomeScreen({ route, navigation }: any) {
       .catch(() => {});
   }, []);
 
+  // ========== HANDLERS ==========
   // Xóa nội dung tìm kiếm
   const clearSearch = () => {
     setSearchText("");
@@ -211,6 +215,7 @@ export default function HomeScreen({ route, navigation }: any) {
     navigation.navigate("Chi Tiết Sản Phẩm", { productId: item.id });
   };
 
+  // ========== RENDER FUNCTIONS ==========
   // Render category item
   const renderCategoryItem = ({ item }: any) => (
     <TouchableOpacity
@@ -244,6 +249,7 @@ export default function HomeScreen({ route, navigation }: any) {
     </TouchableOpacity>
   );
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -392,6 +398,7 @@ export default function HomeScreen({ route, navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,8 +1,11 @@
+// ========== IMPORTS ==========
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+// ========== COMPONENT ==========
 export default function ContactScreen() {
+  // ========== RENDER ==========
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.item}>
@@ -40,6 +43,7 @@ export default function ContactScreen() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     padding: 16,

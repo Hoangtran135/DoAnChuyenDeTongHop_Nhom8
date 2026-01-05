@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import {
   View,
@@ -14,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#6A0DAD",
   accent: "#ff6f61",
@@ -24,6 +26,7 @@ const colors = {
   starInactive: "#ccc",
 };
 
+// ========== TYPES ==========
 interface FeedbackScreenProps {
   navigation: any;
   route: {
@@ -34,13 +37,14 @@ interface FeedbackScreenProps {
   };
 }
 
+// ========== COMPONENT ==========
 export default function FeedbackScreen({
   navigation,
   route,
 }: FeedbackScreenProps) {
   const { orderId, userId } = route.params;
 
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,6 +52,7 @@ export default function FeedbackScreen({
 
   const stars = [1, 2, 3, 4, 5];
 
+  // ========== HANDLERS ==========
   // Chọn ảnh từ thư viện để đính kèm vào đánh giá
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -131,6 +136,7 @@ export default function FeedbackScreen({
     </TouchableOpacity>
   );
 
+  // ========== RENDER ==========
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Phản hồi đơn hàng #{orderId}</Text>
@@ -174,6 +180,7 @@ export default function FeedbackScreen({
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

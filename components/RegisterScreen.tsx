@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import { BASE_URL } from "../ipconfig";
 import {
@@ -11,7 +12,9 @@ import {
 } from "react-native";
 import { theme } from "../styles/theme";
 
+// ========== COMPONENT ==========
 const RegisterScreen = () => {
+  // ========== STATE MANAGEMENT ==========
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -20,6 +23,7 @@ const RegisterScreen = () => {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ========== HANDLERS ==========
   const handleRegister = async () => {
     if (!fullName || !username || !password || !email || !phone || !address) {
       Alert.alert("Thông báo", "Vui lòng nhập đầy đủ thông tin.");
@@ -62,6 +66,7 @@ const RegisterScreen = () => {
     }
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Đăng Ký</Text>
@@ -122,6 +127,8 @@ const RegisterScreen = () => {
 };
 
 export default RegisterScreen;
+
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

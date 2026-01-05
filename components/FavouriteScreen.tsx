@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -14,6 +15,7 @@ import axios from "axios";
 import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 
+// ========== TYPES ==========
 interface FavoriteItem {
   id: number;
   name: string;
@@ -22,7 +24,9 @@ interface FavoriteItem {
   productid: number;
 }
 
+// ========== COMPONENT ==========
 const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  // ========== STATE MANAGEMENT ==========
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<number | null>(null);
@@ -41,6 +45,7 @@ const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }, [userId]);
 
+  // ========== FUNCTIONS ==========
   const fetchFavorites = () => {
     setLoading(true);
     fetch(`${BASE_URL}/favourite/${userId}`)
@@ -55,6 +60,7 @@ const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       });
   };
 
+  // ========== HANDLERS ==========
   const handleRemoveFavorite = (productId: number) => {
     Alert.alert(
       "Xác nhận",
@@ -88,6 +94,7 @@ const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     );
   };
 
+  // ========== RENDER FUNCTIONS ==========
   const renderItem = ({ item }: { item: FavoriteItem }) => (
     <TouchableOpacity
       style={styles.item}
@@ -121,6 +128,7 @@ const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       {!userId ? (
@@ -163,6 +171,7 @@ const FavouriteScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

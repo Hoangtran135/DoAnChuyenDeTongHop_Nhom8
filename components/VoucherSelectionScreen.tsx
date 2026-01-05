@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -9,15 +10,19 @@ import {
 } from "react-native";
 import { BASE_URL } from "../ipconfig";
 
+// ========== COMPONENT ==========
 export default function VoucherSelectionScreen({ route, navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const { userId, onSelect } = route.params;
   const [vouchers, setVouchers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // ========== EFFECTS ==========
   useEffect(() => {
     fetchVouchers();
   }, []);
 
+  // ========== FUNCTIONS ==========
   const fetchVouchers = async () => {
     setLoading(true);
     try {
@@ -37,6 +42,7 @@ export default function VoucherSelectionScreen({ route, navigation }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   const handleSelect = (voucher: { code: string; discountAmount: number }) => {
     if (onSelect && typeof onSelect === "function") {
       onSelect(voucher); // Gửi nguyên object voucher
@@ -44,6 +50,7 @@ export default function VoucherSelectionScreen({ route, navigation }: any) {
     navigation.goBack();
   };
 
+  // ========== RENDER ==========
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 22, fontWeight: "600", marginBottom: 20 }}>
@@ -77,6 +84,7 @@ export default function VoucherSelectionScreen({ route, navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "#f9f9f9",

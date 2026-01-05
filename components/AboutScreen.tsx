@@ -1,7 +1,10 @@
+// ========== IMPORTS ==========
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 
+// ========== COMPONENT ==========
 export default function AboutScreen() {
+  // ========== RENDER ==========
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
@@ -36,6 +39,7 @@ export default function AboutScreen() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     padding: 16,

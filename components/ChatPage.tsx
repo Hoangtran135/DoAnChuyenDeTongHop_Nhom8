@@ -1,9 +1,11 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../ipconfig';
 
+// ========== TYPES ==========
 type Props = {
   navigation: any;
 };
@@ -14,11 +16,13 @@ type Conversation = {
   created_at: string;
 };
 
+// ========== COMPONENT ==========
 export default function ChatPage({ navigation }: Props) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [userId, setUserId] = useState<number | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
 
+  // ========== EFFECTS ==========
   // Lấy userId và load danh sách cuộc trò chuyện
   useEffect(() => {
     AsyncStorage.getItem('userId').then((id) => {
@@ -30,6 +34,7 @@ export default function ChatPage({ navigation }: Props) {
     });
   }, []);
 
+  // ========== FUNCTIONS ==========
   // Lấy danh sách cuộc trò chuyện của user
   const fetchConversations = (uid: number) => {
     axios
@@ -41,6 +46,7 @@ export default function ChatPage({ navigation }: Props) {
       });
   };
 
+  // ========== HANDLERS ==========
   // Tạo cuộc trò chuyện mới với admin
   const createConversation = () => {
     if (!userId) {
@@ -62,6 +68,7 @@ export default function ChatPage({ navigation }: Props) {
       });
   };
 
+  // ========== RENDER FUNCTIONS ==========
   // Render conversation item
   const renderConversation = ({ item }: { item: Conversation }) => (
     <TouchableOpacity
@@ -81,6 +88,7 @@ export default function ChatPage({ navigation }: Props) {
     </TouchableOpacity>
   );
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -102,6 +110,7 @@ export default function ChatPage({ navigation }: Props) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

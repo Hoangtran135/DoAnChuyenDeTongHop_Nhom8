@@ -1,7 +1,10 @@
+// ========== IMPORTS ==========
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 
+// ========== COMPONENT ==========
 export default function PolicyScreen() {
+  // ========== RENDER ==========
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.sectionTitle}>1. Chính Sách Bảo Mật</Text>
@@ -38,6 +41,7 @@ export default function PolicyScreen() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     padding: 16,

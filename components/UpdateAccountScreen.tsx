@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { BASE_URL } from "../ipconfig";
@@ -13,6 +14,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/Ionicons";
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#6A0DAD",
   background: "#f9f9f9",
@@ -20,6 +22,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 type UserInfo = {
   id: string;
   name: string;
@@ -28,11 +31,13 @@ type UserInfo = {
   address: string;
 };
 
+// ========== COMPONENT ==========
 export default function UpdateAccountScreen({ navigation }: any) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // ========== EFFECTS ==========
   // Lấy thông tin user từ API
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -59,6 +64,7 @@ export default function UpdateAccountScreen({ navigation }: any) {
     fetchUserInfo();
   }, [navigation]);
 
+  // ========== HANDLERS ==========
   // Cập nhật thông tin user
   const handleUpdate = () => {
     if (!userInfo) {
@@ -109,6 +115,7 @@ export default function UpdateAccountScreen({ navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -187,6 +194,7 @@ export default function UpdateAccountScreen({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

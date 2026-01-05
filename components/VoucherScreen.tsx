@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
@@ -12,6 +13,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { BASE_URL } from "../ipconfig";
 import { useNavigation } from "@react-navigation/native";
 
+// ========== TYPES ==========
 interface Voucher {
   id: number;
   start: string;
@@ -22,6 +24,7 @@ interface Voucher {
   discount: number;
 }
 
+// ========== HELPER FUNCTIONS ==========
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
   if (isNaN(date.getTime())) return dateStr;
@@ -31,13 +34,15 @@ const formatDate = (dateStr: string) => {
   return `${day}/${month}/${year}`;
 };
 
+// ========== COMPONENT ==========
 export default function VoucherScreen() {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [vouchers, setVouchers] = useState<Voucher[]>([]);
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
+  // ========== EFFECTS ==========
   // Lấy danh sách voucher từ API
   useEffect(() => {
     axios
@@ -54,6 +59,7 @@ export default function VoucherScreen() {
       });
   }, []);
 
+  // ========== RENDER FUNCTIONS ==========
   // Render voucher item
   const renderVoucher = ({ item }: { item: Voucher }) => (
     <View style={styles.card}>
@@ -91,6 +97,7 @@ export default function VoucherScreen() {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <FlatList
@@ -106,6 +113,7 @@ export default function VoucherScreen() {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

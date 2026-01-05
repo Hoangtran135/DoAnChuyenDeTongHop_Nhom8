@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import NotLoggedIn from "../settings/NotLoggedIn";
 import {
@@ -16,6 +17,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 
+// ========== TYPES ==========
 interface CartItem {
   cart_id: string;
   name: string;
@@ -40,12 +42,14 @@ type Props = {
   navigation: CartScreenNavigationProp;
 };
 
+// ========== COMPONENT ==========
 export default function CartScreen({ navigation }: Props) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // ========== EFFECTS ==========
   // Cập nhật tiêu đề navigation theo số lượng sản phẩm
   useLayoutEffect(() => {
     const count = cartItems.length;
@@ -87,6 +91,7 @@ export default function CartScreen({ navigation }: Props) {
     return <NotLoggedIn navigation={navigation} />;
   }
 
+  // ========== HANDLERS ==========
   // Tính tổng tiền
   const getTotalAmount = () => {
     return cartItems.reduce(
@@ -203,6 +208,7 @@ export default function CartScreen({ navigation }: Props) {
     navigation.navigate("Tạo Đơn Hàng", { userId, totalAmount });
   };
 
+  // ========== RENDER FUNCTIONS ==========
   // Render cart item
   const renderItem = ({ item }: { item: CartItem }) => (
     <View style={styles.item}>
@@ -264,6 +270,7 @@ export default function CartScreen({ navigation }: Props) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <FlatList
@@ -300,6 +307,7 @@ export default function CartScreen({ navigation }: Props) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: { flex: 1,
      backgroundColor: "#fff"

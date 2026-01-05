@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
   View,
@@ -11,12 +12,7 @@ import {
 import QRCode from "react-native-qrcode-svg";
 import { BASE_URL } from "../ipconfig";
 
-/**
- * VNPAY SCREEN - Màn hình thanh toán VNPay giả lập
- * - Hiển thị thông tin thanh toán
- * - Xử lý thanh toán thành công/thất bại
- */
-
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#0052A5",
   success: "#28a745",
@@ -27,6 +23,7 @@ const colors = {
   border: "#ddd",
 };
 
+// ========== TYPES ==========
 interface VNPayScreenProps {
   route: {
     params: {
@@ -40,7 +37,9 @@ interface VNPayScreenProps {
   navigation: any;
 }
 
+// ========== COMPONENT ==========
 export default function VNPayScreen({ route, navigation }: VNPayScreenProps) {
+  // ========== STATE MANAGEMENT ==========
   const { amount, userId, onPaymentSuccess, onPaymentCancel } = route.params;
   const [loading, setLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
@@ -58,6 +57,7 @@ export default function VNPayScreen({ route, navigation }: VNPayScreenProps) {
     [qrCodeValue]
   );
 
+  // ========== HANDLERS ==========
   const handlePaymentSuccess = useCallback(async () => {
     if (isAutoPaymentStarted || loading) return;
     
@@ -86,6 +86,7 @@ export default function VNPayScreen({ route, navigation }: VNPayScreenProps) {
     }
   }, [amount, isAutoPaymentStarted, loading, onPaymentSuccess, navigation]);
 
+  // ========== EFFECTS ==========
   // Khởi tạo QR code trên server khi component mount
   useEffect(() => {
     fetch(`${BASE_URL}/qr-create`, {
@@ -150,6 +151,7 @@ export default function VNPayScreen({ route, navigation }: VNPayScreenProps) {
   }, [onPaymentCancel, navigation]);
 
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <ScrollView 
@@ -206,6 +208,7 @@ export default function VNPayScreen({ route, navigation }: VNPayScreenProps) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

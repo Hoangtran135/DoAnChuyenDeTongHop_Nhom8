@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import NotLoggedIn from "../settings/NotLoggedIn";
 import {
@@ -17,13 +18,15 @@ import { BASE_URL } from "../ipconfig";
 import Navbar from "./Navbar";
 import Icon from "react-native-vector-icons/Ionicons";
 
+// ========== COMPONENT ==========
 export default function AccountScreen({ navigation }: any) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [userInfo, setUserInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
 
+  // ========== EFFECTS ==========
   // Lấy thông tin user từ API
   useEffect(() => {
     setLoading(true);
@@ -56,6 +59,7 @@ export default function AccountScreen({ navigation }: any) {
       });
   }, [navigation]);
 
+  // ========== HANDLERS ==========
   // Đăng xuất và xóa thông tin user
   const handleLogout = () => {
     setLoading(true);
@@ -103,6 +107,7 @@ export default function AccountScreen({ navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -245,6 +250,7 @@ export default function AccountScreen({ navigation }: any) {
     </View>
   );
 }
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

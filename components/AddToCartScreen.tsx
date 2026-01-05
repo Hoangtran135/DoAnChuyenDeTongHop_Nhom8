@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../ipconfig";
 import {
@@ -14,6 +15,7 @@ import {
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#6A0DAD",
   accent: "#ff6f61",
@@ -22,25 +24,28 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 interface AddToCartScreenProps {
   visible: boolean;
   onClose: () => void;
   productId: number | null;
-  navigation?: any; // Đã đổi thành không bắt buộc
-  userId: number | null; // thêm dòng này
+  navigation?: any;
+  userId: number | null;
 }
 
+// ========== COMPONENT ==========
 const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
   visible,
   onClose,
   productId,
-  navigation, // có thể có hoặc không
+  navigation,
 }) => {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [product, setProduct] = useState<any>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [userId, setUserId] = useState<number | null>(null);
 
+  // ========== EFFECTS ==========
   // Lấy thông tin sản phẩm và userId khi modal mở
   useEffect(() => {
     if (productId && visible) {
@@ -57,6 +62,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
     }
   }, [productId, visible]);
 
+  // ========== HANDLERS ==========
   // Thêm sản phẩm vào giỏ hàng
   const handleAddToCart = () => {
     if (!userId || !product) {
@@ -95,6 +101,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
+  // ========== RENDER ==========
   return (
     <Modal
       visible={visible}
@@ -169,6 +176,7 @@ const AddToCartScreen: React.FC<AddToCartScreenProps> = ({
   );
 };
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,

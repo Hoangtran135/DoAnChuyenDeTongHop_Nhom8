@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../ipconfig";
 import NotLoggedIn from "../settings/NotLoggedIn";
@@ -15,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "./Navbar";
 import { Ionicons as Icon } from "@expo/vector-icons";
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#6A0DAD",
   accent: "#ff6f61",
@@ -24,6 +26,7 @@ const colors = {
   muted: "#777",
 };
 
+// ========== TYPES ==========
 interface Order {
   id: number;
   status: string;
@@ -32,13 +35,15 @@ interface Order {
   created_at: string | null;
 }
 
+// ========== COMPONENT ==========
 export default function OrderManagementScreen({ navigation }: any) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"All" | "Ordered" | "Delivered" | "Canceled">("All");
 
+  // ========== EFFECTS ==========
   // Lấy userId từ AsyncStorage
   useEffect(() => {
     AsyncStorage.getItem("userId").then((id) => {
@@ -63,6 +68,7 @@ export default function OrderManagementScreen({ navigation }: any) {
     }
   }, [userId]);
 
+  // ========== FUNCTIONS ==========
   // Lấy danh sách đơn hàng từ API
   const fetchOrders = async () => {
     try {
@@ -75,6 +81,7 @@ export default function OrderManagementScreen({ navigation }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   // Hủy đơn hàng
   const cancelOrder = async (orderId: number) => {
     Alert.alert("Xác nhận", "Bạn có chắc muốn hủy đơn hàng này?", [
@@ -121,6 +128,7 @@ export default function OrderManagementScreen({ navigation }: any) {
     return new Date(dateString).toLocaleDateString();
   };
 
+  // ========== RENDER FUNCTIONS ==========
   // Render order item
   const renderOrderItem = ({ item }: { item: Order }) => (
     <View style={styles.orderItem}>
@@ -201,6 +209,7 @@ export default function OrderManagementScreen({ navigation }: any) {
   return <NotLoggedIn navigation={navigation} />;
 }
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       {/* Phần filter */}
@@ -254,6 +263,7 @@ export default function OrderManagementScreen({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

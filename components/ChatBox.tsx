@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
@@ -12,6 +13,7 @@ import {
 import axios from 'axios';
 import { BASE_URL } from '../ipconfig';
 
+// ========== TYPES ==========
 type Message = {
   id: number;
   conversation_id: number;
@@ -31,13 +33,15 @@ type Props = {
   };
 };
 
+// ========== COMPONENT ==========
 export default function ChatBox({ route }: Props) {
   const { conversationId, userId } = route.params;
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMsg, setNewMsg] = useState('');
   const flatListRef = useRef<FlatList>(null);
 
+  // ========== FUNCTIONS ==========
   // Load danh sách tin nhắn trong cuộc trò chuyện
   const loadMessages = () => {
     axios
@@ -65,6 +69,7 @@ export default function ChatBox({ route }: Props) {
       .catch(() => {});
   };
 
+  // ========== EFFECTS ==========
   // Tự động load tin nhắn mới mỗi 2 giây (tối ưu hơn 1 giây)
   useEffect(() => {
     loadMessages();
@@ -95,6 +100,7 @@ export default function ChatBox({ route }: Props) {
     );
   };
 
+  // ========== RENDER ==========
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -135,6 +141,7 @@ export default function ChatBox({ route }: Props) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

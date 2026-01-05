@@ -1,7 +1,9 @@
+// ========== IMPORTS ==========
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView } from "react-native";
 import { BASE_URL } from "../ipconfig";
 
+// ========== CONSTANTS ==========
 const colors = {
   primary: "#6A0DAD",
   background: "#f8f9fa",
@@ -12,8 +14,11 @@ const colors = {
   error: "#6A0DAD",
 };
 
+// ========== COMPONENT ==========
 export default function AddOrderScreen({ route, navigation }: any) {
   const { userId, totalAmount } = route.params;
+  
+  // ========== STATE MANAGEMENT ==========
 
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
   const [selectedVoucherCode, setSelectedVoucherCode] = useState<string | null>(null);
@@ -27,6 +32,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
     [totalAmount, discountAmount]
   );
 
+  // ========== EFFECTS ==========
   // Lấy thông tin user và sản phẩm trong giỏ hàng
   useEffect(() => {
     const fetchOrderInfo = async () => {
@@ -48,6 +54,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
     fetchOrderInfo();
   }, []);
 
+  // ========== HANDLERS ==========
   // Chọn voucher giảm giá
   const handleSelectVoucher = useCallback(() => {
     navigation.navigate("Chọn Khuyến Mãi", {
@@ -126,6 +133,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
     }
   }, [selectedMethod, handleVNPayPayment]);
 
+  // ========== RENDER ==========
   return (
     <ScrollView style={styles.container}>
 
@@ -222,6 +230,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

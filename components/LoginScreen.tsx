@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useState } from "react";
 import { BASE_URL } from "../ipconfig";
 import {
@@ -14,11 +15,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Picker } from "@react-native-picker/picker";
 import { theme } from "../styles/theme";
 
+// ========== COMPONENT ==========
 export default function LoginScreen({ navigation }: any) {
+  // ========== STATE MANAGEMENT ==========
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState(0); // 0 = Member, 1 = Admin
 
+  // ========== HANDLERS ==========
   const handleLogin = () => {
     if (!username || !password) {
       Alert.alert("Lỗi nhập liệu", "Vui lòng nhập cả tên đăng nhập và mật khẩu");
@@ -50,6 +54,7 @@ export default function LoginScreen({ navigation }: any) {
       });
   };
 
+  // ========== RENDER ==========
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Đăng Nhập</Text>
@@ -98,6 +103,7 @@ export default function LoginScreen({ navigation }: any) {
   );
 }
 
+// ========== STYLES ==========
 const styles = StyleSheet.create({
   container: {
     flex: 1,

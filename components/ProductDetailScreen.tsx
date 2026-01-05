@@ -1,3 +1,4 @@
+// ========== IMPORTS ==========
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -15,6 +16,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FontAwesome } from "@expo/vector-icons";
 import { theme } from "../styles/theme";
 
+// ========== STYLES (Partial) ==========
 const styles = StyleSheet.create({
   addToCartButton: {
     backgroundColor: theme.colors.primary,
@@ -35,8 +37,9 @@ const styles = StyleSheet.create({
   },
 });
 
+// ========== COMPONENT ==========
 export default function ProductDetailScreen({ route, navigation }: any) {
-  // State management
+  // ========== STATE MANAGEMENT ==========
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<number | null>(null);
@@ -45,6 +48,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
 
   const { productId } = route.params || {};
 
+  // ========== EFFECTS ==========
   // Load dữ liệu khi component mount
   useEffect(() => {
     if (!productId) {
@@ -65,6 +69,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
     }
   }, [userId]);
 
+  // ========== FUNCTIONS ==========
   // Lấy thông tin chi tiết sản phẩm
   const fetchProduct = async () => {
     try {
@@ -111,6 +116,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
     }
   };
 
+  // ========== HANDLERS ==========
   // Thêm sản phẩm vào giỏ hàng
   const handleAddToCart = async () => {
     if (!userId) {
@@ -179,6 +185,7 @@ export default function ProductDetailScreen({ route, navigation }: any) {
     );
   }
 
+  // ========== RENDER ==========
   return (
     <ScrollView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Image
