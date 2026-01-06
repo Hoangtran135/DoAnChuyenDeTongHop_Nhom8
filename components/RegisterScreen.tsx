@@ -13,7 +13,7 @@ import {
 import { theme } from "../styles/theme";
 
 // ========== COMPONENT ==========
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }: any) => {
   // ========== STATE MANAGEMENT ==========
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -49,7 +49,15 @@ const RegisterScreen = () => {
       const data = await response.json();
 
       if (data.success) {
-        Alert.alert("Thành công", data.alert || "Đăng ký thành công!");
+        Alert.alert("Thành công", data.alert || "Đăng ký thành công!", [
+          {
+            text: "OK",
+            onPress: () => {
+              // Điều hướng về trang chủ sau khi đăng ký thành công
+              navigation.replace("Trang Chủ");
+            },
+          },
+        ]);
         setFullName("");
         setUsername("");
         setPassword("");
