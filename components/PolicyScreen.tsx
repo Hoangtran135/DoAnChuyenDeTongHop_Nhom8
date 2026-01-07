@@ -9,7 +9,7 @@ export default function PolicyScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.sectionTitle}>1. Chính Sách Bảo Mật</Text>
       <Text style={styles.text}>
-        - Nine Mart cam kết bảo mật tuyệt đối thông tin cá nhân của khách hàng.
+        - Eight Mart cam kết bảo mật tuyệt đối thông tin cá nhân của khách hàng.
         {"\n"}- Mọi dữ liệu chỉ được sử dụng cho mục đích liên quan đến dịch vụ chăm sóc khách hàng và không chia sẻ cho bên thứ ba.
       </Text>
 
@@ -29,7 +29,7 @@ export default function PolicyScreen() {
       <Text style={styles.sectionTitle}>4. Chính Sách Hỗ Trợ Khách Hàng</Text>
       <Text style={styles.text}>
         - Đội ngũ hỗ trợ hoạt động từ 8h đến 22h hàng ngày, kể cả cuối tuần.
-        {"\n"}- Mọi thắc mắc, khiếu nại được tiếp nhận qua hotline, email hoặc fanpage Nine Mart.
+        {"\n"}- Mọi thắc mắc, khiếu nại được tiếp nhận qua hotline, email hoặc fanpage Eight Mart.
       </Text>
 
       <Text style={styles.sectionTitle}>5. Chính Sách Bảo Hành Sản Phẩm</Text>

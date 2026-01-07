@@ -230,7 +230,7 @@ export default function AccountScreen({ navigation }: any) {
             style={styles.mainButton}
             onPress={() => navigation.navigate("Chat Page")}
           >
-            <Text style={styles.buttonText}>Chat Với NineMart</Text>
+            <Text style={styles.buttonText}>Chat Với EightMart</Text>
           </TouchableOpacity>
          
           <TouchableOpacity

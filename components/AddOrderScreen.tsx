@@ -166,7 +166,7 @@ export default function AddOrderScreen({ route, navigation }: any) {
 
       {/* Mã khuyến mãi */}
       <View style={styles.voucherSection}>
-        <Text style={styles.sectionTitle}>NineMart Voucher :</Text>
+        <Text style={styles.sectionTitle}>EightMart Voucher :</Text>
         <TouchableOpacity onPress={handleSelectVoucher}>
           <View style={styles.voucherRow}>
             <Text style={styles.voucherText}>
