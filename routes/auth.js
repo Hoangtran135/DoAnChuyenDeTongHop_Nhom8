@@ -45,10 +45,10 @@ router.post("/register", (req, res) => {
         return res.status(400).json({ success: false, alert: "Email đã tồn tại" });
 
       const insertSql =
-        "INSERT INTO users (name, username, email, password, phone, address, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        "INSERT INTO users (name, username, email, password, phone, address, role, role1) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
       db.query(
         insertSql,
-        [fullName, username, email, password, phone, address, 0],
+        [fullName, username, email, password, phone, address, 0, 1],
         (err) => {
           if (err)
             return res
@@ -133,8 +133,9 @@ router.post("/login", (req, res) => {
       .json({ success: false, message: "Vui lòng nhập đủ thông tin" });
   }
 
+  // Chỉ cho phép đăng nhập khi role1 = 1 (role1 = 0 thì không thể đăng nhập)
   const sql =
-    "SELECT * FROM users WHERE username = ? AND password = ? AND role = ?";
+    "SELECT * FROM users WHERE username = ? AND password = ? AND role = ? AND role1 = 1";
   db.query(sql, [username, password, role], (err, results) => {
     if (err) {
       console.error("Lỗi khi truy vấn:", err);
