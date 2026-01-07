@@ -10,12 +10,12 @@ export default function AboutScreen() {
 
       <Text style={styles.sectionTitle}>Giới Thiệu</Text>
       <Text style={styles.text}>
-        Nine Mart là cửa hàng tạp hóa hiện đại, cung cấp đầy đủ các mặt hàng thiết yếu cho cuộc sống hàng ngày. Chúng tôi tự hào mang đến cho khách hàng trải nghiệm mua sắm tiện lợi, nhanh chóng và chất lượng.
+        Eight Mart là cửa hàng tạp hóa hiện đại, cung cấp đầy đủ các mặt hàng thiết yếu cho cuộc sống hàng ngày. Chúng tôi tự hào mang đến cho khách hàng trải nghiệm mua sắm tiện lợi, nhanh chóng và chất lượng.
       </Text>
 
       <Text style={styles.sectionTitle}>Sứ Mệnh</Text>
       <Text style={styles.text}>
-        Chúng tôi cam kết phục vụ cộng đồng với sự tận tâm và uy tín, luôn đảm bảo sản phẩm sạch – an toàn – đúng giá. Nine Mart mong muốn trở thành người bạn đồng hành đáng tin cậy trong mỗi gia đình Việt.
+        Chúng tôi cam kết phục vụ cộng đồng với sự tận tâm và uy tín, luôn đảm bảo sản phẩm sạch – an toàn – đúng giá. Eight Mart mong muốn trở thành người bạn đồng hành đáng tin cậy trong mỗi gia đình Việt.
       </Text>
 
       <Text style={styles.sectionTitle}>Giá Trị Cốt Lõi</Text>
@@ -26,7 +26,7 @@ export default function AboutScreen() {
         - Gắn kết cộng đồng
       </Text>
 
-      <Text style={styles.sectionTitle}>Tại Sao Chọn Nine Mart?</Text>
+      <Text style={styles.sectionTitle}>Tại Sao Chọn Eight Mart?</Text>
       <Text style={styles.text}>
         ✅ Đa dạng sản phẩm{"\n"}
         ✅ Dịch vụ giao hàng nhanh{"\n"}
@@ -34,7 +34,7 @@ export default function AboutScreen() {
         ✅ Chương trình khuyến mãi hấp dẫn hàng tuần
       </Text>
 
-      <Text style={styles.footer}>Cảm ơn bạn đã tin tưởng và đồng hành cùng Nine Mart!</Text>
+      <Text style={styles.footer}>Cảm ơn bạn đã tin tưởng và đồng hành cùng Eight Mart!</Text>
     </ScrollView>
   );
 }
