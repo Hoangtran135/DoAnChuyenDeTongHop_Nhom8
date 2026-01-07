@@ -2,7 +2,6 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../utils/dbHelper");
-const { sendAIResponse } = require("../ai-assistant");
 
 // ========== GET - Lấy conversations của user ==========
 router.get("/api/conversations/user/:userId", (req, res) => {
@@ -57,7 +56,7 @@ router.post("/api/conversations", (req, res) => {
         const newConversationId = result.insertId;
 
         const welcomeMessage =
-          "Xin chào bạn! Cảm ơn bạn đã liên hệ với NineMart – bạn cần hỗ trợ gì hôm nay ạ? 💬";
+          "Xin chào bạn! Cảm ơn bạn đã liên hệ với EightMart – bạn cần hỗ trợ gì hôm nay ạ? 💬";
         const adminId = 1;
         const role = 1;
 
@@ -121,16 +120,6 @@ router.post("/api/messages", (req, res) => {
         console.error(err);
         return res.status(500).json({ error: "Server error" });
       }
-
-      db.query(
-        "SELECT role FROM users WHERE id = ?",
-        [user_id],
-        (err2, userResult) => {
-          if (!err2 && userResult.length > 0 && userResult[0].role !== 1) {
-            sendAIResponse(db, conversation_id, message);
-          }
-        }
-      );
 
       res.json({ success: true });
     }

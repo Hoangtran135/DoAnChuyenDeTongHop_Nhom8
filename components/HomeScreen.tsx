@@ -459,6 +459,7 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: "100%",
     height: "100%",
+    marginTop: 10, // Di chuyển ảnh xuống một chút
   },
   searchOverlay: {
     position: "absolute",
